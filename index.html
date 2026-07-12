@@ -8,6 +8,13 @@
       content="Ruijie Zheng's academic homepage. Computer Science undergraduate at the University of Michigan."
     />
     <title>Ruijie Zheng</title>
+    <!-- EB Garamond (elegant serif body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
     <script defer src="script.js"></script>
     <script type="application/ld+json">
@@ -16,7 +23,7 @@
         "@type": "Person",
         "name": "Ruijie Zheng",
         "email": "mailto:ruijiezh@umich.edu",
-        "url": "https://ruijiezh67.github.io/RuijieZheng/",
+        "url": "https://ruijiezh67.github.io/",
         "affiliation": [
           {
             "@type": "CollegeOrUniversity",
@@ -28,11 +35,11 @@
           }
         ],
         "knowsAbout": [
-          "Computer vision",
+          "Machine learning systems",
           "Parameter-efficient fine-tuning",
+          "Computer vision",
           "Federated learning",
-          "Robotics and control",
-          "Mechanical design"
+          "Robotics and control"
         ]
       }
     </script>
@@ -43,6 +50,8 @@
     <header class="site-header" aria-label="Site navigation">
       <a class="brand" href="#top">Ruijie Zheng</a>
       <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#about">About</a>
+        <a href="#news">News</a>
         <a href="#research">Research</a>
         <a href="#education">Education</a>
         <a href="#service">Service</a>
@@ -50,239 +59,251 @@
       </nav>
     </header>
 
-    <main id="main" class="page-shell">
-      <aside class="profile-panel" id="top" aria-label="Profile summary">
-        <img class="portrait" src="assets/avatar.jpg" alt="Portrait of Ruijie Zheng" />
-        <p class="eyebrow">Undergraduate Student</p>
-        <h1>Ruijie Zheng</h1>
-        <p class="profile-title">
-          Computer Science, University of Michigan<br />
-          Mechanical Engineering background from SJTU Joint Institute
-        </p>
-
-        <div class="contact-stack" aria-label="Contact links">
-          <a href="mailto:ruijiezh@umich.edu">Email</a>
-          <a href="https://github.com/ruijiezh67" rel="noreferrer">GitHub</a>
-          <a href="assets/Ruijie_Zheng_CV.pdf">CV</a>
+    <main id="main">
+      <!-- Profile hero -->
+      <section class="profile" id="top" aria-label="Profile">
+        <div class="portrait-frame reveal-photo">
+          <img class="portrait" src="assets/avatar.jpg" alt="Portrait of Ruijie Zheng" />
         </div>
+        <h1 class="reveal">Ruijie Zheng</h1>
+        <p class="tagline reveal">Machine Learning &middot; Computer Vision &middot; Robotics</p>
+        <p class="affil reveal">
+          Undergraduate in Computer Science,<br />
+          University of Michigan, Ann Arbor
+        </p>
+        <ul class="social reveal" aria-label="Links">
+          <li><a href="mailto:ruijiezh@umich.edu">Email</a></li>
+          <li><a href="https://github.com/ruijiezh67" rel="noreferrer">GitHub</a></li>
+          <li><a href="https://scholar.google.com/" rel="noreferrer">Scholar</a></li>
+          <li><a href="assets/Ruijie_Zheng_CV.pdf">CV</a></li>
+        </ul>
+      </section>
 
-        <section class="mini-section" aria-labelledby="interests-heading">
-          <h2 id="interests-heading">Research Interests</h2>
-          <ul class="tag-list">
-            <li>Efficient ML</li>
-            <li>Computer Vision</li>
-            <li>Robotics</li>
-            <li>Control</li>
-            <li>Mechanical Design</li>
-          </ul>
-        </section>
-      </aside>
-
-      <div class="content-column">
-        <section class="intro-section" aria-labelledby="about-heading">
-          <h2 id="about-heading">About Me</h2>
+      <!-- About -->
+      <section class="block" id="about" aria-labelledby="about-h">
+        <h2 id="about-h" class="reveal">About Me</h2>
+        <div class="prose reveal">
           <p>
-            I am an undergraduate student studying Computer Science at the University of Michigan. Before coming to Michigan, I studied Mechanical Engineering at the Joint Institute of Shanghai Jiao Tong University.
+            I am an undergraduate student studying Computer Science at the University of Michigan.
+            Before Michigan, I studied Mechanical Engineering at the Joint Institute of Shanghai Jiao
+            Tong University.
           </p>
           <p>
-            My current interests are efficient machine learning, computer vision, robotics, and control. I like problems where algorithms interact with real data, physical systems, or engineering constraints.
+            My interests lie in efficient machine learning, computer vision, and robotics. I enjoy
+            problems where algorithms meet real data, physical systems, and engineering constraints.
           </p>
-        </section>
+        </div>
+      </section>
 
-        <section class="section-block" aria-labelledby="news-heading">
-          <div class="section-heading">
-            <h2 id="news-heading">News</h2>
-          </div>
-          <ol class="timeline compact-timeline">
-            <li>
-              <time datetime="2025-09">Sep 2025</time>
-              <span>Started a course project on tennis video analysis using pose landmarks and feedback generation.</span>
-            </li>
-            <li>
-              <time datetime="2025-08">Aug 2025</time>
-              <span>Started studying Computer Science at the University of Michigan College of Engineering.</span>
-            </li>
-            <li>
-              <time datetime="2025-08">Aug 2025</time>
-              <span>Began research on Sparse Weight-Decomposed LoRA for efficient model adaptation.</span>
-            </li>
-          </ol>
-        </section>
+      <!-- News -->
+      <section class="block" id="news" aria-labelledby="news-h">
+        <h2 id="news-h" class="reveal">News</h2>
+        <ul class="news-list">
+          <li class="reveal">
+            <span class="news-date">May 2026</span>
+            <span>Joined the Human-AI Lab (Prof. Anhong Guo) at Michigan, building <em>GAMUT</em>, a bilingual research documentation workspace.</span>
+          </li>
+          <li class="reveal">
+            <span class="news-date">Mar 2026</span>
+            <span>Started research on backdoor attacks against latent reasoning models with the LIST Lab (Prof. Yan Chen), University of Washington.</span>
+          </li>
+          <li class="reveal">
+            <span class="news-date">Aug 2025</span>
+            <span>Began studying Computer Science at the University of Michigan College of Engineering.</span>
+          </li>
+        </ul>
+      </section>
 
-        <section class="section-block" id="research" aria-labelledby="research-heading">
-          <div class="section-heading">
-            <h2 id="research-heading">Research and Projects</h2>
-          </div>
+      <!-- Research and Projects -->
+      <section class="block" id="research" aria-labelledby="research-h">
+        <h2 id="research-h" class="reveal">Research &amp; Projects</h2>
+        <div class="entries">
+          <article class="entry reveal">
+            <div class="entry-when"><span>May 2026 &ndash; Present</span><em>Research</em></div>
+            <div class="entry-body">
+              <h3>GAMUT: A Bilingual Research Documentation Workspace</h3>
+              <p class="entry-affil">Human-AI Lab, University of Michigan &middot; Prof. Anhong Guo</p>
+              <p>
+                Building a bilingual workspace that organizes literature reviews, research directions,
+                source indexing, and mentor reports to support academic collaboration and knowledge
+                management.
+              </p>
+            </div>
+          </article>
 
-          <div class="work-list">
-            <article class="work-item">
-              <div class="work-meta">
-                <span>2025</span>
-                <time>Research</time>
-              </div>
-              <div>
-                <h3>Sparse Weight-Decomposed LoRA (SDoRA)</h3>
-                <p class="entry-note">University of Michigan, Ann Arbor</p>
-                <p>
-                  Worked on a parameter-efficient fine-tuning framework combining weight decomposition with learnable sparse gating. I implemented the SoRA module, trained Qwen2.5-3B models, and analyzed sparsity dynamics and layer-wise pruning patterns on BoolQ, PIQA, and ARC-c.
-                </p>
-              </div>
-            </article>
+          <article class="entry reveal">
+            <div class="entry-when"><span>Mar 2026 &ndash; Present</span><em>Research</em></div>
+            <div class="entry-body">
+              <h3>Backdoor Attacks on Latent Reasoning Models</h3>
+              <p class="entry-affil">LIST Lab, University of Washington, Seattle &middot; Prof. Yan Chen</p>
+              <p>
+                Studying backdoor mechanisms on latent reasoning models with a focus on trigger
+                injection and reasoning-specific attack behavior, and evaluating attack success,
+                activation patterns, and robustness under reasoning-heavy benchmarks.
+              </p>
+            </div>
+          </article>
 
-            <article class="work-item">
-              <div class="work-meta">
-                <span>2025</span>
-                <time>Course Project</time>
-              </div>
-              <div>
-                <h3>LLM-Driven Tennis Coaching System</h3>
-                <p class="entry-note">University of Michigan, Ann Arbor</p>
-                <p>
-                  Built a pipeline for tennis videos using MediaPipe and Sport2D to extract pose landmarks. The project used heuristic keyframe selection and phase-aware prompts to produce natural-language coaching feedback.
-                </p>
-              </div>
-            </article>
+          <article class="entry reveal">
+            <div class="entry-when"><span>Sep &ndash; Dec 2025</span><em>Course Project</em></div>
+            <div class="entry-body">
+              <h3>LLM-Driven Tennis Coaching System</h3>
+              <p class="entry-affil">University of Michigan, Ann Arbor</p>
+              <p>
+                Built an end-to-end pipeline extracting pose landmarks from tennis videos with
+                MediaPipe and Sport2D, using heuristic keyframe selection and phase-aware LLM
+                prompting to synthesize personalized coaching feedback.
+              </p>
+            </div>
+          </article>
 
-            <article class="work-item">
-              <div class="work-meta">
-                <span>2024</span>
-                <time>Research</time>
-              </div>
-              <div>
-                <h3>Multi-Modality Federated Learning</h3>
-                <p class="entry-note">School of Electronic Information and Electrical Engineering, SJTU</p>
-                <p>
-                  Reproduced federated learning algorithms such as FedAvg and Harmony in PyTorch, and explored ways to improve efficiency when processing multi-modal data.
-                </p>
-              </div>
-            </article>
+          <article class="entry reveal">
+            <div class="entry-when"><span>Aug &ndash; Dec 2025</span><em>Research</em></div>
+            <div class="entry-body">
+              <h3>Sparse Weight-Decomposed LoRA (SDoRA)</h3>
+              <p class="entry-affil">University of Michigan, Ann Arbor</p>
+              <p>
+                Proposed a parameter-efficient fine-tuning framework combining weight decomposition
+                with learnable sparse gating. Implemented the SoRA module, trained Qwen2.5-3B models,
+                and analyzed sparsity dynamics and layer-wise pruning on BoolQ, PIQA, and ARC-c.
+              </p>
+            </div>
+          </article>
 
-            <article class="work-item">
-              <div class="work-meta">
-                <span>2024 - Present</span>
-                <time>Research</time>
-              </div>
-              <div>
-                <h3>Water Jet Propulsion Based on Negative Pressure Energy Storage</h3>
-                <p class="entry-note">School of Mechanical Engineering, SJTU</p>
-                <p>
-                  Constructed control logic in Simulink, explored reinforcement-learning-based optimization, and modeled spacecraft shell structures in SolidWorks.
-                </p>
-              </div>
-            </article>
+          <article class="entry reveal">
+            <div class="entry-when"><span>Nov 2024 &ndash; Present</span><em>Research</em></div>
+            <div class="entry-body">
+              <h3>Water Jet Propulsion via Negative Pressure Energy Storage</h3>
+              <p class="entry-affil">School of Mechanical Engineering, SJTU</p>
+              <p>
+                Constructed control logic in Simulink, explored reinforcement-learning-based
+                optimization, and modeled spacecraft shell structures in SolidWorks.
+              </p>
+            </div>
+          </article>
 
-            <article class="work-item">
-              <div class="work-meta">
-                <span>2024</span>
-                <time>Innovation Program</time>
-              </div>
-              <div>
-                <h3>Cross Twin Rotor Unmanned Helicopter</h3>
-                <p class="entry-note">School of Electronic Information and Electrical Engineering, SJTU</p>
-                <p>
-                  Used quaternion representations to implement part of the aircraft control algorithm and contributed to mechanical assembly of the prototype.
-                </p>
-              </div>
-            </article>
+          <article class="entry reveal">
+            <div class="entry-when"><span>Jan &ndash; Oct 2024</span><em>Research</em></div>
+            <div class="entry-body">
+              <h3>Multi-Modality Federated Learning</h3>
+              <p class="entry-affil">School of Electronic Information and Electrical Engineering, SJTU</p>
+              <p>
+                Reproduced federated learning algorithms such as FedAvg and Harmony in PyTorch, and
+                explored ways to improve efficiency when processing multi-modal data.
+              </p>
+            </div>
+          </article>
 
-            <article class="work-item">
-              <div class="work-meta">
-                <span>2024</span>
-                <time>Course Design</time>
-              </div>
-              <div>
-                <h3>Mars Rover Model</h3>
-                <p class="entry-note">Joint Institute, SJTU</p>
-                <p>
-                  Worked on 3D modeling for an introductory engineering design project, assembled the rover, and implemented part of its control algorithm.
-                </p>
-              </div>
-            </article>
-          </div>
-        </section>
+          <article class="entry reveal">
+            <div class="entry-when"><span>Feb &ndash; Oct 2024</span><em>Innovation Program</em></div>
+            <div class="entry-body">
+              <h3>Cross Twin-Rotor Unmanned Helicopter</h3>
+              <p class="entry-affil">School of Electronic Information and Electrical Engineering, SJTU</p>
+              <p>
+                Used quaternion representations to implement part of the aircraft control algorithm
+                and contributed to mechanical assembly of the prototype.
+              </p>
+            </div>
+          </article>
 
-        <section class="section-block" id="education" aria-labelledby="education-heading">
-          <div class="section-heading">
-            <h2 id="education-heading">Education</h2>
-          </div>
-          <div class="info-grid">
-            <article class="info-card">
-              <p class="date-label">Aug 2025 - Present</p>
+          <article class="entry reveal">
+            <div class="entry-when"><span>May &ndash; Aug 2024</span><em>Course Design</em></div>
+            <div class="entry-body">
+              <h3>Mars Rover Model</h3>
+              <p class="entry-affil">Joint Institute, SJTU</p>
+              <p>
+                Handled 3D modeling for an introductory engineering design project, assembled the
+                rover, and implemented part of its control algorithm.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Education -->
+      <section class="block" id="education" aria-labelledby="education-h">
+        <h2 id="education-h" class="reveal">Education</h2>
+        <div class="entries">
+          <article class="entry reveal">
+            <div class="entry-when"><span>Aug 2025 &ndash; Present</span></div>
+            <div class="entry-body">
               <h3>University of Michigan, Ann Arbor</h3>
-              <p>College of Engineering, undergraduate student in Computer Science</p>
-              <p class="detail-line">GPA: 3.933/4.0</p>
-            </article>
-            <article class="info-card">
-              <p class="date-label">Sep 2023 - Jul 2025</p>
+              <p class="entry-affil">College of Engineering &middot; B.S. in Computer Science</p>
+              <p>GPA: 3.947 / 4.0</p>
+            </div>
+          </article>
+          <article class="entry reveal">
+            <div class="entry-when"><span>Sep 2023 &ndash; Jul 2025</span></div>
+            <div class="entry-body">
               <h3>Shanghai Jiao Tong University</h3>
-              <p>Joint Institute, undergraduate student in Mechanical Engineering</p>
-              <p class="detail-line">GPA: 3.78/4.0, ranked 48/335</p>
-            </article>
-          </div>
-        </section>
+              <p class="entry-affil">Joint Institute &middot; Mechanical Engineering</p>
+              <p>GPA: 3.78 / 4.0 &middot; Ranked 48 / 335</p>
+            </div>
+          </article>
+        </div>
+      </section>
 
-        <section class="section-block" aria-labelledby="skills-heading">
-          <div class="section-heading">
-            <h2 id="skills-heading">Skills</h2>
-          </div>
-          <div class="skill-grid">
-            <article>
-              <h3>Programming and Modeling</h3>
-              <p>Python, PyTorch, MATLAB, Simulink, Mathematica</p>
-            </article>
-            <article>
-              <h3>Design and Prototyping</h3>
-              <p>SolidWorks, Arduino, Raspberry Pi, 3D printing, CO2 laser cutting</p>
-            </article>
-          </div>
-        </section>
-
-        <section class="section-block" id="service" aria-labelledby="service-heading">
-          <div class="section-heading">
-            <h2 id="service-heading">Service and Teaching</h2>
-          </div>
-          <ol class="timeline">
-            <li>
-              <time>Sep 2024 - Present</time>
-              <div>
-                <h3>Vice President, ASME Student Branch</h3>
-                <p>Organized workshops and lectures on mechanical engineering topics and maintained the ASME official webpage at the SJTU Joint Institute.</p>
-              </div>
-            </li>
-            <li>
-              <time>Sep 2024 - Jan 2025</time>
-              <div>
-                <h3>Teaching Assistant, MATH1860J Honors Mathematics</h3>
-                <p>Held recitations and office hours, prepared worksheets, graded assignments and exams, and helped grade homework and exams.</p>
-              </div>
-            </li>
-            <li>
-              <time>May 2024 and Aug 2024</time>
-              <div>
-                <h3>Volunteer Teaching, Yingshang, Anhui</h3>
-                <p>Gave basic physics and mathematics lectures for primary school students and organized extracurricular activities.</p>
-              </div>
-            </li>
-          </ol>
-        </section>
-
-        <section class="contact-section" id="contact" aria-labelledby="contact-heading">
+      <!-- Skills -->
+      <section class="block" id="skills" aria-labelledby="skills-h">
+        <h2 id="skills-h" class="reveal">Skills</h2>
+        <div class="skills reveal">
           <div>
-            <h2 id="contact-heading">Contact</h2>
-            <p>Email is the best way to reach me.</p>
+            <h3>Programming &amp; Modeling</h3>
+            <p>Python, PyTorch, MATLAB, Simulink, Mathematica</p>
           </div>
-          <div class="contact-actions">
-            <a href="mailto:ruijiezh@umich.edu">Email</a>
-            <a href="https://github.com/ruijiezh67" rel="noreferrer">GitHub</a>
-            <a href="assets/Ruijie_Zheng_CV.pdf">CV</a>
+          <div>
+            <h3>Design &amp; Prototyping</h3>
+            <p>SolidWorks, Arduino, Raspberry Pi, 3D printing, CO<sub>2</sub> laser cutting</p>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
+
+      <!-- Service -->
+      <section class="block" id="service" aria-labelledby="service-h">
+        <h2 id="service-h" class="reveal">Service &amp; Teaching</h2>
+        <div class="entries">
+          <article class="entry reveal">
+            <div class="entry-when"><span>Sep 2024 &ndash; Present</span></div>
+            <div class="entry-body">
+              <h3>Vice President, ASME Student Branch</h3>
+              <p class="entry-affil">Joint Institute, SJTU</p>
+              <p>Organized workshops and lectures on mechanical engineering topics and maintained the branch's official webpage.</p>
+            </div>
+          </article>
+          <article class="entry reveal">
+            <div class="entry-when"><span>Sep 2024 &ndash; Jan 2025</span></div>
+            <div class="entry-body">
+              <h3>Teaching Assistant, MATH1860J Honors Mathematics</h3>
+              <p class="entry-affil">Joint Institute, SJTU</p>
+              <p>Held recitations and office hours, prepared worksheets, and graded assignments and exams.</p>
+            </div>
+          </article>
+          <article class="entry reveal">
+            <div class="entry-when"><span>May &amp; Aug 2024</span></div>
+            <div class="entry-body">
+              <h3>Volunteer Teaching</h3>
+              <p class="entry-affil">Yingshang, Anhui</p>
+              <p>Gave basic physics and mathematics lectures for primary school students and organized extracurricular activities.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section class="block" id="contact" aria-labelledby="contact-h">
+        <h2 id="contact-h" class="reveal">Contact</h2>
+        <p class="prose reveal">Email is the best way to reach me.</p>
+        <ul class="social reveal" aria-label="Contact links">
+          <li><a href="mailto:ruijiezh@umich.edu">ruijiezh@umich.edu</a></li>
+          <li><a href="https://github.com/ruijiezh67" rel="noreferrer">GitHub</a></li>
+          <li><a href="assets/Ruijie_Zheng_CV.pdf">CV</a></li>
+        </ul>
+      </section>
     </main>
 
     <footer class="site-footer">
       <span>&copy; <span id="year">2026</span> Ruijie Zheng</span>
-      <span>Last updated: May 2026</span>
+      <span>Ann Arbor, MI</span>
     </footer>
   </body>
 </html>
