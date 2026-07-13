@@ -1,17 +1,42 @@
-# Ruijie Zheng Personal Website
+# Ruijie Zheng — Personal Website
 
-This repository contains a concise academic personal homepage for Ruijie Zheng, designed for GitHub Pages.
+Source for my academic homepage, hosted with GitHub Pages at
+**<https://ruijiezh67.github.io/>**.
+
+A minimalist single-column academic page: LaTeX (Computer Modern) and EB Garamond
+typography, a soft macaron / graph-paper background, blue social icons, school-logo
+chips, scroll-reveal animations, and a confetti burst when you click the portrait.
 
 ## Structure
 
-- `index.html` - page content and metadata
-- `styles.css` - responsive visual design
-- `script.js` - small navigation and footer enhancements
-- `assets/avatar.jpg` - profile image
-- `assets/Ruijie_Zheng_CV.pdf` - downloadable CV
+- `index.html` — page content and structured metadata (JSON-LD)
+- `styles.css` — responsive design, fonts, background pattern, animations
+- `script.js` — scroll-reveal, nav scroll-spy, footer year, avatar confetti
+- `assets/avatar.jpg` — profile photo
+- `assets/Ruijie_Zheng_CV.pdf` — downloadable CV
+- `assets/logos/` — institution logos (Michigan, Northwestern, SJTU)
+- `.nojekyll` — serve files as-is, skipping Jekyll processing
+
+## Fonts
+
+Loaded from CDNs, so an internet connection is needed for the intended look:
+
+- **Computer Modern (CMU Serif)** — name, section and entry titles (self-declared
+  `@font-face` in `styles.css` pointing at the `computer-modern` package on jsDelivr)
+- **EB Garamond** — body text (Google Fonts)
+- **Bungee** / **Permanent Marker** — the research-interest display line (Google Fonts)
+
+## Editing
+
+Everything is plain HTML/CSS/JS — edit the files directly, no build step. Open
+`index.html` in a browser to preview locally.
 
 ## GitHub Pages
 
-For this project repository, publish from the `main` branch and root directory. The expected URL is:
+This is a user site (the repository is named `ruijiezh67.github.io`), so it publishes
+from the `main` branch, root directory, to the root domain:
 
-`https://ruijiezh67.github.io/RuijieZheng/`
+`https://ruijiezh67.github.io/`
+
+After pushing, the live site updates within a minute or two; hard-refresh
+(`Ctrl`+`F5`) if the browser serves a cached version.
