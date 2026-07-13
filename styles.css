@@ -37,6 +37,11 @@
   --line: #ececec;
   --accent: #2f6db3;
   --accent-soft: rgba(47, 109, 179, 0.1);
+  /* shades of blue for icons */
+  --blue-1: #1e4e79;
+  --blue-2: #2f6db3;
+  --blue-3: #3b82c4;
+  --blue-4: #5aa0dd;
   --maxw: 720px;
   --font-latex: "CMU Serif", "Latin Modern Roman", Georgia, "Times New Roman", serif;
   --font-serif: "EB Garamond", Georgia, "Times New Roman", serif;
@@ -283,6 +288,53 @@ h1 {
   background: var(--line);
 }
 
+/* icon-button variant (profile) */
+.social-icons {
+  gap: 0.7rem;
+}
+
+.social-icons li + li::before {
+  display: none;
+}
+
+.ic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #eef4fb;
+  border: 1px solid #dbe7f4;
+  color: var(--blue-2);
+  transition: transform 200ms ease, background-color 200ms ease, color 200ms ease,
+    box-shadow 200ms ease, border-color 200ms ease;
+}
+
+.ic svg {
+  width: 19px;
+  height: 19px;
+  fill: currentColor;
+}
+
+.ic:hover,
+.ic:focus-visible {
+  transform: translateY(-4px);
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 8px 18px rgba(47, 109, 179, 0.3);
+}
+
+/* each icon a different shade of blue */
+.social-icons li:nth-child(1) .ic { color: var(--blue-2); }
+.social-icons li:nth-child(1) .ic:hover { background: var(--blue-2); border-color: var(--blue-2); }
+.social-icons li:nth-child(2) .ic { color: var(--blue-1); }
+.social-icons li:nth-child(2) .ic:hover { background: var(--blue-1); border-color: var(--blue-1); }
+.social-icons li:nth-child(3) .ic { color: var(--blue-3); }
+.social-icons li:nth-child(3) .ic:hover { background: var(--blue-3); border-color: var(--blue-3); }
+.social-icons li:nth-child(4) .ic { color: var(--blue-4); }
+.social-icons li:nth-child(4) .ic:hover { background: var(--blue-4); border-color: var(--blue-4); }
+
 /* ---------- Section blocks ---------- */
 .block {
   padding: clamp(1.6rem, 4vw, 2.3rem) 0;
@@ -349,6 +401,33 @@ h1 {
   flex-direction: column;
   gap: 0.2rem;
   padding-top: 0.15rem;
+}
+
+.logo-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 7px;
+  margin-bottom: 0.55rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: transform 260ms ease, box-shadow 260ms ease;
+}
+
+.logo-chip img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.entry:hover .logo-chip {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 14px rgba(47, 109, 179, 0.2);
 }
 
 .entry-when span {
@@ -420,6 +499,20 @@ h1 {
   font-size: 0.82rem;
 }
 
+/* ---------- Confetti canvas ---------- */
+.confetti-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 60;
+}
+
+.portrait {
+  cursor: pointer;
+}
+
 /* ---------- Reveal animation ---------- */
 .reveal {
   opacity: 0;
@@ -469,9 +562,16 @@ h1 {
 
   .entry-when {
     flex-direction: row;
-    align-items: baseline;
-    gap: 0.6rem;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
     padding-top: 0;
+  }
+
+  .logo-chip {
+    margin-bottom: 0;
+    width: 40px;
+    height: 40px;
   }
 
   .skills {
