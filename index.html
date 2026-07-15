@@ -158,48 +158,57 @@
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l4 4v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm7 1.5V7h3.5L13 3.5Z"/></svg>
                 Paper (PDF)
               </a>
-              <a class="pub-link" href="#pub-video">
+              <a class="pub-link" href="assets/GAM_UIST2026_demo.mp4" target="_blank" rel="noreferrer">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7L8 5Z"/></svg>
                 Demo Video
               </a>
             </div>
           </div>
         </article>
-        <video id="pub-video" class="pub-video reveal" controls preload="metadata" playsinline>
-          <source src="assets/GAM_UIST2026_demo.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-          <a href="assets/GAM_UIST2026_demo.mp4">Download the demo video</a>.
-        </video>
       </section>
 
-      <!-- Selected Work (album shelf) -->
+      <!-- Selected Work (3D card deck) -->
       <section class="block" id="work" aria-labelledby="work-h">
-        <h2 id="work-h" class="reveal">Selected Work <span class="h2-hint">scroll &rarr;</span></h2>
-        <div class="shelf reveal" aria-label="Featured work, scroll horizontally">
-          <a class="disc" href="#publications" style="--c1:#2f6db3;--c2:#6b4fbf;--c3:#c95b9a">
-            <div class="disc-cover"><span class="disc-no">01</span><span class="disc-tag">UIST &rsquo;26</span></div>
-            <div class="disc-meta"><h3>General Accessibility Models</h3><p>Demo &middot; Michigan</p></div>
-          </a>
-          <a class="disc" href="#research" style="--c1:#2f8fd0;--c2:#2f6db3;--c3:#5ac8e0">
-            <div class="disc-cover"><span class="disc-no">02</span><span class="disc-tag">2026</span></div>
-            <div class="disc-meta"><h3>GAMUT Workspace</h3><p>Human&ndash;AI Lab &middot; Michigan</p></div>
-          </a>
-          <a class="disc" href="#research" style="--c1:#7b3fb0;--c2:#b13f8f;--c3:#d1567a">
-            <div class="disc-cover"><span class="disc-no">03</span><span class="disc-tag">2026</span></div>
-            <div class="disc-meta"><h3>Backdoor Attacks on LRMs</h3><p>LIST Lab &middot; Northwestern</p></div>
-          </a>
-          <a class="disc" href="#research" style="--c1:#2fa36d;--c2:#37a0b0;--c3:#5ac8a0">
-            <div class="disc-cover"><span class="disc-no">04</span><span class="disc-tag">2025</span></div>
-            <div class="disc-meta"><h3>LLM Tennis Coaching</h3><p>Course Project &middot; Michigan</p></div>
-          </a>
-          <a class="disc" href="#research" style="--c1:#2f9fb3;--c2:#2f6db3;--c3:#4fb0c9">
-            <div class="disc-cover"><span class="disc-no">05</span><span class="disc-tag">2025</span></div>
-            <div class="disc-meta"><h3>Sparse DoRA (SDoRA)</h3><p>PEFT &middot; Michigan</p></div>
-          </a>
-          <a class="disc" href="#research" style="--c1:#d98a3f;--c2:#d15b7a;--c3:#e0a95a">
-            <div class="disc-cover"><span class="disc-no">06</span><span class="disc-tag">2024</span></div>
-            <div class="disc-meta"><h3>Water Jet Propulsion</h3><p>Control &middot; SJTU</p></div>
-          </a>
+        <h2 id="work-h" class="reveal">Selected Work <span class="h2-hint">click / drag / &larr; &rarr;</span></h2>
+        <div class="deck-stage reveal">
+          <div class="deck" id="deck" tabindex="0" aria-label="Featured work — click, drag, or use arrow keys to flip through">
+            <button class="deck-card" type="button" style="--c1:#2f6db3;--c2:#6b4fbf;--c3:#c95b9a"
+              data-title="General Accessibility Models" data-meta="UIST 2026 Demo &middot; Michigan" data-href="#publications">
+              <span class="dc-no">01</span><span class="dc-tag">UIST &rsquo;26</span>
+            </button>
+            <button class="deck-card" type="button" style="--c1:#2f8fd0;--c2:#2f6db3;--c3:#5ac8e0"
+              data-title="GAMUT Workspace" data-meta="Human&ndash;AI Lab &middot; Michigan, 2026" data-href="#research">
+              <span class="dc-no">02</span><span class="dc-tag">2026</span>
+            </button>
+            <button class="deck-card" type="button" style="--c1:#7b3fb0;--c2:#b13f8f;--c3:#d1567a"
+              data-title="Backdoor Attacks on LRMs" data-meta="LIST Lab &middot; Northwestern, 2026" data-href="#research">
+              <span class="dc-no">03</span><span class="dc-tag">2026</span>
+            </button>
+            <button class="deck-card" type="button" style="--c1:#2fa36d;--c2:#37a0b0;--c3:#5ac8a0"
+              data-title="LLM Tennis Coaching" data-meta="Course Project &middot; Michigan, 2025" data-href="#research">
+              <span class="dc-no">04</span><span class="dc-tag">2025</span>
+            </button>
+            <button class="deck-card" type="button" style="--c1:#2f9fb3;--c2:#2f6db3;--c3:#4fb0c9"
+              data-title="Sparse DoRA (SDoRA)" data-meta="PEFT &middot; Michigan, 2025" data-href="#research">
+              <span class="dc-no">05</span><span class="dc-tag">2025</span>
+            </button>
+            <button class="deck-card" type="button" style="--c1:#d98a3f;--c2:#d15b7a;--c3:#e0a95a"
+              data-title="Water Jet Propulsion" data-meta="Control &middot; SJTU, 2024" data-href="#research">
+              <span class="dc-no">06</span><span class="dc-tag">2024</span>
+            </button>
+          </div>
+          <div class="deck-info">
+            <a class="deck-link" id="deckLink" href="#publications">
+              <h3 id="deckTitle">General Accessibility Models</h3>
+              <span class="deck-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+            <p class="deck-meta" id="deckMeta">UIST 2026 Demo &middot; Michigan</p>
+            <div class="deck-nav">
+              <button type="button" id="deckPrev" aria-label="Previous work">&lsaquo;</button>
+              <span class="deck-count" id="deckCount">01 / 06</span>
+              <button type="button" id="deckNext" aria-label="Next work">&rsaquo;</button>
+            </div>
+          </div>
         </div>
       </section>
 

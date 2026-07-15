@@ -138,6 +138,97 @@ if (portrait && !reduceMotion) {
   portrait.addEventListener("click", spawn);
 }
 
+// Interactive 3D work deck — click a card, drag, use the arrows, or ‹ › buttons
+const deck = document.querySelector("#deck");
+if (deck) {
+  const cards = [...deck.querySelectorAll(".deck-card")];
+  const n = cards.length;
+  const titleEl = document.querySelector("#deckTitle");
+  const metaEl = document.querySelector("#deckMeta");
+  const linkEl = document.querySelector("#deckLink");
+  const countEl = document.querySelector("#deckCount");
+  const prevBtn = document.querySelector("#deckPrev");
+  const nextBtn = document.querySelector("#deckNext");
+  let active = 0;
+
+  const pad = (x) => String(x).padStart(2, "0");
+
+  const render = () => {
+    cards.forEach((card, i) => {
+      const d = i - active;
+      let tx, ty, tz, ry, sc, op, br, zi;
+      if (d < 0) {
+        // flipped past — slide toward the viewer and fade out
+        tx = -190 + d * 26;
+        ty = 48;
+        tz = 170;
+        ry = 34;
+        sc = 0.94;
+        op = 0;
+        br = 1;
+        zi = 0;
+      } else {
+        // active (d = 0) up front, the rest fan up-and-right behind it
+        tx = d * 48;
+        ty = d * -30;
+        tz = d * -140;
+        ry = d === 0 ? -6 : -24;
+        sc = 1 - d * 0.03;
+        op = d > 4 ? 0 : 1;
+        br = 1 - Math.min(d, 4) * 0.13;
+        zi = 100 - d;
+      }
+      card.style.transform = `translate3d(${tx}px, ${ty}px, ${tz}px) rotateY(${ry}deg) scale(${sc})`;
+      card.style.opacity = op;
+      card.style.filter = `brightness(${br})`;
+      card.style.zIndex = zi;
+      card.tabIndex = d === 0 ? 0 : -1;
+      card.setAttribute("aria-hidden", op === 0 ? "true" : "false");
+    });
+    const a = cards[active];
+    if (titleEl) titleEl.innerHTML = a.dataset.title;
+    if (metaEl) metaEl.innerHTML = a.dataset.meta;
+    if (linkEl) linkEl.setAttribute("href", a.dataset.href);
+    if (countEl) countEl.textContent = `${pad(active + 1)} / ${pad(n)}`;
+  };
+
+  const go = (i) => {
+    active = ((i % n) + n) % n;
+    render();
+  };
+
+  cards.forEach((card, i) => {
+    card.addEventListener("click", () => go(i === active ? active + 1 : i));
+  });
+  if (prevBtn) prevBtn.addEventListener("click", () => go(active - 1));
+  if (nextBtn) nextBtn.addEventListener("click", () => go(active + 1));
+
+  deck.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+      e.preventDefault();
+      go(active + 1);
+    } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+      e.preventDefault();
+      go(active - 1);
+    }
+  });
+
+  // pointer drag / swipe
+  let startX = null;
+  deck.addEventListener("pointerdown", (e) => {
+    startX = e.clientX;
+  });
+  window.addEventListener("pointerup", (e) => {
+    if (startX === null) return;
+    const dx = e.clientX - startX;
+    if (dx < -45) go(active + 1);
+    else if (dx > 45) go(active - 1);
+    startX = null;
+  });
+
+  render();
+}
+
 // Nav scrollspy: highlight the section currently in view
 const sections = [...document.querySelectorAll("section[id]")];
 const navLinks = [...document.querySelectorAll(".nav-links a")];
