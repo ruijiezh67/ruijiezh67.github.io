@@ -4,6 +4,32 @@ if (yearElement) {
   yearElement.textContent = String(new Date().getFullYear());
 }
 
+// Scroll progress bar: fills with scroll depth and shifts hue by page position
+const progressBar = document.querySelector("#scrollProgress");
+if (progressBar) {
+  let ticking = false;
+  const updateProgress = () => {
+    const doc = document.documentElement;
+    const max = doc.scrollHeight - doc.clientHeight;
+    const pct = max > 0 ? Math.min(1, doc.scrollTop / max) : 0;
+    // hue travels blue (210) -> violet -> pink (330) as you go top -> bottom
+    const hue = 210 + pct * 120;
+    progressBar.style.width = (pct * 100).toFixed(2) + "%";
+    progressBar.style.background = `hsl(${hue.toFixed(0)}, 72%, 56%)`;
+    progressBar.style.boxShadow = `0 0 12px hsla(${hue.toFixed(0)}, 72%, 56%, 0.6)`;
+    ticking = false;
+  };
+  const onScroll = () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(updateProgress);
+    }
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll, { passive: true });
+  updateProgress();
+}
+
 // Scroll reveal: fade + rise elements into view as they enter the viewport
 const revealEls = [...document.querySelectorAll(".reveal, .reveal-photo")];
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

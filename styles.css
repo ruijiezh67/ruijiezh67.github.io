@@ -576,6 +576,291 @@ h1 {
   font-size: 0.82rem;
 }
 
+/* ---------- Scroll progress bar ---------- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 0;
+  z-index: 30;
+  background: var(--blue-2);
+  box-shadow: 0 0 12px rgba(47, 109, 179, 0.55);
+  transition: background-color 120ms linear;
+}
+
+/* ---------- Publications: album hero card ---------- */
+.pub-album {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 1.6rem;
+  align-items: start;
+}
+
+.album-cover {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2f6db3, #6b4fbf 45%, #c95b9a);
+  background-size: 220% 220%;
+  animation: coverFlow 10s ease-in-out infinite;
+  box-shadow: 0 12px 32px rgba(47, 109, 179, 0.3);
+}
+
+.cover-venue {
+  color: #fff;
+  font-family: var(--font-latex);
+  font-size: 1.9rem;
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.28);
+}
+
+.cover-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-family: var(--font-sans);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--blue-2);
+  background: rgba(255, 255, 255, 0.92);
+  padding: 0.25em 0.6em;
+  border-radius: 999px;
+}
+
+.album-cover::after,
+.disc-cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
+  transform: translateX(-130%);
+  pointer-events: none;
+}
+
+.pub-album:hover .album-cover::after,
+.disc:hover .disc-cover::after {
+  animation: sheen 900ms ease;
+}
+
+.pub-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.7rem;
+}
+
+.tag-venue,
+.tag-status {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 0.28em 0.7em;
+  border-radius: 999px;
+}
+
+.tag-venue {
+  background: var(--blue-2);
+  color: #fff;
+}
+
+.tag-status {
+  background: #eef4fb;
+  color: var(--blue-1);
+  border: 1px solid #dbe7f4;
+}
+
+.pub-detail h3 {
+  font-family: var(--font-latex);
+  font-size: 1.32rem;
+  font-weight: 700;
+  line-height: 1.22;
+  margin-bottom: 0.5rem;
+}
+
+.pub-authors {
+  color: #4a5058;
+  font-size: 0.98rem;
+  margin-bottom: 0.55rem;
+}
+
+.pub-authors strong {
+  color: var(--blue-1);
+}
+
+.pub-abstract {
+  color: #4a5058;
+  font-size: 0.95rem;
+}
+
+.pub-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.9rem;
+}
+
+.pub-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--blue-2);
+  padding: 0.4em 0.9em;
+  border: 1px solid #dbe7f4;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.65);
+  transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 200ms ease, color 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+
+.pub-link svg {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
+}
+
+.pub-link:hover,
+.pub-link:focus-visible {
+  transform: translateY(-3px);
+  background: var(--blue-2);
+  color: #fff;
+  border-color: var(--blue-2);
+  text-decoration: none;
+  box-shadow: 0 8px 18px rgba(47, 109, 179, 0.28);
+}
+
+.pub-video {
+  width: 100%;
+  margin-top: 1.4rem;
+  border-radius: 14px;
+  background: #0b1a2b;
+  box-shadow: 0 12px 32px rgba(30, 60, 90, 0.22);
+  scroll-margin-top: 5rem;
+}
+
+/* ---------- Selected Work: album shelf ---------- */
+.h2-hint {
+  font-family: var(--font-sans);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--blue-4);
+  margin-left: 0.5rem;
+}
+
+.shelf {
+  display: flex;
+  gap: 1.1rem;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  padding: 0.3rem 0.2rem 1.2rem;
+  margin: 0 -0.2rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--blue-4) transparent;
+}
+
+.shelf::-webkit-scrollbar {
+  height: 7px;
+}
+.shelf::-webkit-scrollbar-thumb {
+  background: var(--blue-4);
+  border-radius: 999px;
+}
+
+.disc {
+  flex: 0 0 auto;
+  width: 205px;
+  scroll-snap-align: start;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.disc:hover {
+  transform: translateY(-8px);
+  text-decoration: none;
+}
+
+.disc-cover {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 15px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--c1), var(--c2) 50%, var(--c3));
+  background-size: 220% 220%;
+  animation: coverFlow 10s ease-in-out infinite;
+  box-shadow: 0 10px 24px rgba(30, 60, 90, 0.24);
+}
+
+.disc:nth-child(2n) .disc-cover { animation-delay: -2.5s; }
+.disc:nth-child(3n) .disc-cover { animation-delay: -5s; }
+
+.disc-no {
+  position: absolute;
+  top: 8px;
+  left: 14px;
+  font-family: var(--font-punk);
+  font-size: 2.3rem;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.22);
+}
+
+.disc-tag {
+  font-family: var(--font-sans);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.24);
+  padding: 0.25em 0.6em;
+  border-radius: 999px;
+  backdrop-filter: blur(2px);
+}
+
+.disc-meta {
+  padding: 0.7rem 0.2rem 0;
+}
+
+.disc-meta h3 {
+  font-family: var(--font-latex);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.15rem;
+}
+
+.disc-meta p {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+@keyframes coverFlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes sheen {
+  from { transform: translateX(-130%); }
+  to { transform: translateX(130%); }
+}
+
 /* ---------- Confetti canvas ---------- */
 .confetti-canvas {
   position: fixed;
@@ -615,6 +900,10 @@ h1 {
     filter: none;
     transition: none;
   }
+  .album-cover,
+  .disc-cover {
+    animation: none;
+  }
 }
 
 /* ---------- Responsive ---------- */
@@ -653,6 +942,15 @@ h1 {
 
   .skills {
     grid-template-columns: 1fr;
+  }
+
+  .pub-album {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .album-cover {
+    max-width: 200px;
   }
 
   .site-footer {

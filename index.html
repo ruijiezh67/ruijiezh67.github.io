@@ -45,16 +45,17 @@
     </script>
   </head>
   <body>
+    <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
     <a class="skip-link" href="#main">Skip to content</a>
 
     <header class="site-header" aria-label="Site navigation">
       <a class="brand" href="#top">Ruijie Zheng</a>
       <nav class="nav-links" aria-label="Primary navigation">
         <a href="#about">About</a>
-        <a href="#news">News</a>
+        <a href="#publications">Publications</a>
+        <a href="#work">Work</a>
         <a href="#research">Research</a>
         <a href="#education">Education</a>
-        <a href="#service">Service</a>
         <a href="#contact">Contact</a>
       </nav>
     </header>
@@ -126,6 +127,79 @@
             (VLA) models, and the security of large language models. I enjoy problems where algorithms
             meet real people, real data, and real-world constraints.
           </p>
+        </div>
+      </section>
+
+      <!-- Publications -->
+      <section class="block" id="publications" aria-labelledby="pub-h">
+        <h2 id="pub-h" class="reveal">Publications</h2>
+        <article class="pub-album reveal">
+          <div class="album-cover" aria-hidden="true">
+            <span class="cover-venue">UIST<br /><b>2026</b></span>
+            <span class="cover-badge">Demo</span>
+          </div>
+          <div class="pub-detail">
+            <div class="pub-tags">
+              <span class="tag-venue">ACM UIST 2026</span>
+              <span class="tag-status">Demo &middot; Under review</span>
+            </div>
+            <h3>Demonstration of General Accessibility Models: Learning Accessibility Needs from Everyday Computer Use</h3>
+            <p class="pub-authors">Yuxuan Liu, <strong>Ruijie Zheng</strong>, Brandon Kim, Jason Wu, Anhong Guo</p>
+            <p class="pub-abstract">
+              We present the General Accessibility Model (GAM), an architecture that learns user
+              accessibility needs by observing everyday computer use. From screen recordings and input
+              streams, GAM generates confidence-weighted propositions describing a user's interaction
+              strategies and in-situ accessibility barriers, and periodically reflects on observations to
+              revise them &mdash; turning everyday interaction into a continuously updated source of
+              knowledge for personalized accessibility support.
+            </p>
+            <div class="pub-links">
+              <a class="pub-link" href="assets/GAM_UIST2026_demo.pdf" target="_blank" rel="noreferrer">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l4 4v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm7 1.5V7h3.5L13 3.5Z"/></svg>
+                Paper (PDF)
+              </a>
+              <a class="pub-link" href="#pub-video">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7L8 5Z"/></svg>
+                Demo Video
+              </a>
+            </div>
+          </div>
+        </article>
+        <video id="pub-video" class="pub-video reveal" controls preload="metadata" playsinline>
+          <source src="assets/GAM_UIST2026_demo.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+          <a href="assets/GAM_UIST2026_demo.mp4">Download the demo video</a>.
+        </video>
+      </section>
+
+      <!-- Selected Work (album shelf) -->
+      <section class="block" id="work" aria-labelledby="work-h">
+        <h2 id="work-h" class="reveal">Selected Work <span class="h2-hint">scroll &rarr;</span></h2>
+        <div class="shelf reveal" aria-label="Featured work, scroll horizontally">
+          <a class="disc" href="#publications" style="--c1:#2f6db3;--c2:#6b4fbf;--c3:#c95b9a">
+            <div class="disc-cover"><span class="disc-no">01</span><span class="disc-tag">UIST &rsquo;26</span></div>
+            <div class="disc-meta"><h3>General Accessibility Models</h3><p>Demo &middot; Michigan</p></div>
+          </a>
+          <a class="disc" href="#research" style="--c1:#2f8fd0;--c2:#2f6db3;--c3:#5ac8e0">
+            <div class="disc-cover"><span class="disc-no">02</span><span class="disc-tag">2026</span></div>
+            <div class="disc-meta"><h3>GAMUT Workspace</h3><p>Human&ndash;AI Lab &middot; Michigan</p></div>
+          </a>
+          <a class="disc" href="#research" style="--c1:#7b3fb0;--c2:#b13f8f;--c3:#d1567a">
+            <div class="disc-cover"><span class="disc-no">03</span><span class="disc-tag">2026</span></div>
+            <div class="disc-meta"><h3>Backdoor Attacks on LRMs</h3><p>LIST Lab &middot; Northwestern</p></div>
+          </a>
+          <a class="disc" href="#research" style="--c1:#2fa36d;--c2:#37a0b0;--c3:#5ac8a0">
+            <div class="disc-cover"><span class="disc-no">04</span><span class="disc-tag">2025</span></div>
+            <div class="disc-meta"><h3>LLM Tennis Coaching</h3><p>Course Project &middot; Michigan</p></div>
+          </a>
+          <a class="disc" href="#research" style="--c1:#2f9fb3;--c2:#2f6db3;--c3:#4fb0c9">
+            <div class="disc-cover"><span class="disc-no">05</span><span class="disc-tag">2025</span></div>
+            <div class="disc-meta"><h3>Sparse DoRA (SDoRA)</h3><p>PEFT &middot; Michigan</p></div>
+          </a>
+          <a class="disc" href="#research" style="--c1:#d98a3f;--c2:#d15b7a;--c3:#e0a95a">
+            <div class="disc-cover"><span class="disc-no">06</span><span class="disc-tag">2024</span></div>
+            <div class="disc-meta"><h3>Water Jet Propulsion</h3><p>Control &middot; SJTU</p></div>
+          </a>
         </div>
       </section>
 

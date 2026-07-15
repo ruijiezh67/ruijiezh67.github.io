@@ -11,11 +11,19 @@ chips, scroll-reveal animations, and a confetti burst when you click the portrai
 
 - `index.html` — page content and structured metadata (JSON-LD)
 - `styles.css` — responsive design, fonts, background pattern, animations
-- `script.js` — scroll-reveal, nav scroll-spy, footer year, avatar confetti
+- `script.js` — scroll progress bar, scroll-reveal, nav scroll-spy, footer year, avatar confetti
 - `assets/avatar.jpg` — profile photo
 - `assets/Ruijie_Zheng_CV.pdf` — downloadable CV
+- `assets/GAM_UIST2026_demo.pdf` / `.mp4` — UIST 2026 demo paper and video
 - `assets/logos/` — institution logos (Michigan, Northwestern, SJTU)
 - `.nojekyll` — serve files as-is, skipping Jekyll processing
+
+## Sections
+
+Profile, About, **Publications** (album-style hero card with paper/video links),
+**Selected Work** (horizontally-scrolling album-cover shelf), News, Research &
+Projects, Education, Skills, Service, Contact. A color-shifting progress bar tracks
+scroll position.
 
 ## Fonts
 
