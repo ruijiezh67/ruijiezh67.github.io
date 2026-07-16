@@ -15,8 +15,8 @@
       href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Bungee&family=Permanent+Marker&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=10" />
-    <script defer src="script.js?v=10"></script>
+    <link rel="stylesheet" href="styles.css?v=11" />
+    <script defer src="script.js?v=11"></script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -115,7 +115,9 @@
 
       <!-- About -->
       <section class="block" id="about" aria-labelledby="about-h">
-        <h2 id="about-h" class="reveal">About Me</h2>
+        <h2 id="about-h" class="reveal">About Me
+          <svg class="h-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5Z"/></svg>
+        </h2>
         <div class="prose reveal">
           <p>
             I am an undergraduate student studying Computer Science at the University of Michigan.
@@ -132,44 +134,31 @@
 
       <!-- Publications -->
       <section class="block" id="publications" aria-labelledby="pub-h">
-        <h2 id="pub-h" class="reveal">Publications</h2>
-        <article class="pub-album reveal">
-          <div class="album-cover" aria-hidden="true">
-            <span class="cover-venue">UIST<br /><b>2026</b></span>
-            <span class="cover-badge">Demo</span>
-          </div>
-          <div class="pub-detail">
-            <div class="pub-tags">
-              <span class="tag-venue">ACM UIST 2026</span>
-              <span class="tag-status">Demo &middot; Under review</span>
-            </div>
-            <h3>Demonstration of General Accessibility Models: Learning Accessibility Needs from Everyday Computer Use</h3>
+        <h2 id="pub-h" class="reveal">Publications
+          <svg class="h-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l4 4v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm7 1.5V7h3.5L13 3.5ZM8 12h8v1.6H8V12Zm0 3.2h8v1.6H8v-1.6ZM8 8.8h3v1.6H8V8.8Z"/></svg>
+        </h2>
+        <div class="pub-list">
+          <article class="pub reveal">
+            <h3 class="pub-title">
+              <a href="assets/GAM_UIST2026_demo.pdf" target="_blank" rel="noreferrer">Demonstration of General Accessibility Models: Learning Accessibility Needs from Everyday Computer Use</a>
+            </h3>
             <p class="pub-authors">Yuxuan Liu, <strong>Ruijie Zheng</strong>, Brandon Kim, Jason Wu, Anhong Guo</p>
-            <p class="pub-abstract">
-              We present the General Accessibility Model (GAM), an architecture that learns user
-              accessibility needs by observing everyday computer use. From screen recordings and input
-              streams, GAM generates confidence-weighted propositions describing a user's interaction
-              strategies and in-situ accessibility barriers, and periodically reflects on observations to
-              revise them &mdash; turning everyday interaction into a continuously updated source of
-              knowledge for personalized accessibility support.
+            <p class="pub-venue"><em>UIST 2026 Demo Session</em> &middot; Under review</p>
+            <p class="pub-meta-links">
+              <a href="assets/GAM_UIST2026_demo.pdf" target="_blank" rel="noreferrer">Paper</a>
+              <span class="sep">|</span>
+              <a href="assets/GAM_UIST2026_demo.mp4" target="_blank" rel="noreferrer">Video</a>
             </p>
-            <div class="pub-links">
-              <a class="pub-link" href="assets/GAM_UIST2026_demo.pdf" target="_blank" rel="noreferrer">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l4 4v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm7 1.5V7h3.5L13 3.5Z"/></svg>
-                Paper (PDF)
-              </a>
-              <a class="pub-link" href="assets/GAM_UIST2026_demo.mp4" target="_blank" rel="noreferrer">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7L8 5Z"/></svg>
-                Demo Video
-              </a>
-            </div>
-          </div>
-        </article>
+          </article>
+        </div>
       </section>
 
       <!-- Selected Work (3D card deck) -->
       <section class="block" id="work" aria-labelledby="work-h">
-        <h2 id="work-h" class="reveal">Selected Work <span class="h2-hint">click / drag / &larr; &rarr;</span></h2>
+        <h2 id="work-h" class="reveal">Selected Work
+          <svg class="h-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3V3Zm10 0h8v8h-8V3ZM3 13h8v8H3v-8Zm10 0h8v8h-8v-8Z"/></svg>
+          <span class="h2-hint">click / drag / &larr; &rarr;</span>
+        </h2>
         <div class="deck-stage reveal">
           <div class="deck" id="deck" tabindex="0" aria-label="Featured work — click, drag, or use arrow keys to flip through">
             <button class="deck-card" type="button" style="--c1:#2f6db3;--c2:#6b4fbf;--c3:#c95b9a"
@@ -214,7 +203,9 @@
 
       <!-- Research and Projects -->
       <section class="block" id="research" aria-labelledby="research-h">
-        <h2 id="research-h" class="reveal">Research &amp; Projects</h2>
+        <h2 id="research-h" class="reveal">Research &amp; Projects
+          <svg class="h-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 2h6v2h-1v4.7l5.1 8.8A2 2 0 0 1 17.4 21H6.6a2 2 0 0 1-1.7-3.5L10 8.7V4H9V2Z"/></svg>
+        </h2>
         <div class="entries">
           <article class="entry reveal">
             <div class="entry-when"><span class="logo-chip"><img src="assets/logos/michigan_m.svg" alt="University of Michigan" loading="lazy" /></span><span>May 2026 &ndash; Present</span><em>Research</em></div>
@@ -320,7 +311,9 @@
 
       <!-- Education -->
       <section class="block" id="education" aria-labelledby="education-h">
-        <h2 id="education-h" class="reveal">Education</h2>
+        <h2 id="education-h" class="reveal">Education
+          <svg class="h-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 1 8.5l11 5.5 9-4.5V16h2V8.5L12 3ZM5 13.2v3.3l7 3.5 7-3.5v-3.3l-7 3.5-7-3.5Z"/></svg>
+        </h2>
         <div class="entries">
           <article class="entry reveal">
             <div class="entry-when"><span class="logo-chip"><img src="assets/logos/michigan_m.svg" alt="University of Michigan" loading="lazy" /></span><span>Aug 2025 &ndash; Present</span></div>
@@ -343,7 +336,9 @@
 
       <!-- Skills -->
       <section class="block" id="skills" aria-labelledby="skills-h">
-        <h2 id="skills-h" class="reveal">Skills</h2>
+        <h2 id="skills-h" class="reveal">Skills
+          <svg class="h-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7 7 0 0 0-1.7-1L14.9 3H9.1l-.4 2.5a7 7 0 0 0-1.7 1l-2.4-1-2 3.4L2.6 11a7.5 7.5 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 1.7 1l.4 2.5h5.8l.4-2.5a7 7 0 0 0 1.7-1l2.4 1 2-3.4-2-1.6ZM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z"/></svg>
+        </h2>
         <div class="skills reveal">
           <div>
             <h3>Programming &amp; Modeling</h3>
@@ -358,7 +353,9 @@
 
       <!-- Service -->
       <section class="block" id="service" aria-labelledby="service-h">
-        <h2 id="service-h" class="reveal">Service &amp; Teaching</h2>
+        <h2 id="service-h" class="reveal">Service &amp; Teaching
+          <svg class="h-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.2-4.6-9.6-8.6C.7 9.3 2.3 5.5 6 5.5c2.1 0 3.4 1.3 4 2.3.6-1 1.9-2.3 4-2.3 3.7 0 5.3 3.8 3.6 6.9C19.2 16.4 12 21 12 21Z"/></svg>
+        </h2>
         <div class="entries">
           <article class="entry reveal">
             <div class="entry-when"><span>Sep 2024 &ndash; Present</span></div>
@@ -389,7 +386,9 @@
 
       <!-- Contact -->
       <section class="block" id="contact" aria-labelledby="contact-h">
-        <h2 id="contact-h" class="reveal">Contact</h2>
+        <h2 id="contact-h" class="reveal">Contact
+          <svg class="h-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 5.5A2.5 2.5 0 0 1 4.5 3h15A2.5 2.5 0 0 1 22 5.5v13a2.5 2.5 0 0 1-2.5 2.5h-15A2.5 2.5 0 0 1 2 18.5v-13Zm2.2.1 7.8 5.9 7.8-5.9H4.2Zm15.8 1.7-6.9 5.2a1.5 1.5 0 0 1-1.8 0L4.2 7.3v11.2h15.6V7.3Z"/></svg>
+        </h2>
         <p class="prose reveal">Email is the best way to reach me.</p>
         <ul class="social reveal" aria-label="Contact links">
           <li><a href="mailto:ruijiezh@umich.edu">ruijiezh@umich.edu</a></li>

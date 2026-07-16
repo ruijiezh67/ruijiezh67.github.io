@@ -589,153 +589,83 @@ h1 {
   transition: background-color 120ms linear;
 }
 
-/* ---------- Publications: album hero card ---------- */
-.pub-album {
+/* ---------- Section-heading icons ---------- */
+.h-ic {
+  width: 1.25em;
+  height: 1.25em;
+  fill: var(--blue-2);
+  vertical-align: -0.22em;
+  margin-left: 0.5em;
+}
+
+/* ---------- Publications: academic list ---------- */
+.pub-list {
   display: grid;
-  grid-template-columns: 190px 1fr;
-  gap: 1.6rem;
-  align-items: start;
+  gap: 1.7rem;
 }
 
-.album-cover {
-  position: relative;
-  aspect-ratio: 1 / 1;
-  border-radius: 16px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #2f6db3, #6b4fbf 45%, #c95b9a);
-  background-size: 220% 220%;
-  animation: coverFlow 10s ease-in-out infinite;
-  box-shadow: 0 12px 32px rgba(47, 109, 179, 0.3);
-}
-
-.cover-venue {
-  color: #fff;
-  font-family: var(--font-latex);
-  font-size: 1.9rem;
-  line-height: 1;
-  text-align: center;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.28);
-}
-
-.cover-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font-family: var(--font-sans);
-  font-size: 0.64rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--blue-2);
-  background: rgba(255, 255, 255, 0.92);
-  padding: 0.25em 0.6em;
-  border-radius: 999px;
-}
-
-.album-cover::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
-  transform: translateX(-130%);
-  pointer-events: none;
-}
-
-.pub-album:hover .album-cover::after {
-  animation: sheen 900ms ease;
-}
-
-.pub-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 0.7rem;
-}
-
-.tag-venue,
-.tag-status {
-  font-family: var(--font-sans);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  padding: 0.28em 0.7em;
-  border-radius: 999px;
-}
-
-.tag-venue {
-  background: var(--blue-2);
-  color: #fff;
-}
-
-.tag-status {
-  background: #eef4fb;
-  color: var(--blue-1);
-  border: 1px solid #dbe7f4;
-}
-
-.pub-detail h3 {
+.pub-title {
   font-family: var(--font-latex);
   font-size: 1.32rem;
   font-weight: 700;
-  line-height: 1.22;
-  margin-bottom: 0.5rem;
+  line-height: 1.26;
+  margin-bottom: 0.35rem;
+}
+
+.pub-title a {
+  color: var(--ink);
+  text-decoration: none;
+  padding: 0.02em 0.1em;
+  border-radius: 4px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition: color 160ms ease, background-color 160ms ease;
+}
+
+.pub-title a:hover,
+.pub-title a:focus-visible {
+  color: var(--blue-2);
+  background: rgba(47, 109, 179, 0.14);
+  text-decoration: none;
 }
 
 .pub-authors {
   color: #4a5058;
-  font-size: 0.98rem;
-  margin-bottom: 0.55rem;
+  font-size: 0.96rem;
+  line-height: 1.5;
+  margin-bottom: 0.2rem;
 }
 
 .pub-authors strong {
   color: var(--blue-1);
 }
 
-.pub-abstract {
-  color: #4a5058;
-  font-size: 0.95rem;
+.pub-venue {
+  font-size: 0.92rem;
+  color: var(--muted);
+  margin-bottom: 0.35rem;
 }
 
-.pub-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-top: 0.9rem;
+.pub-venue em {
+  font-style: italic;
 }
 
-.pub-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4em;
+.pub-meta-links {
   font-family: var(--font-sans);
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.pub-meta-links a {
   color: var(--blue-2);
-  padding: 0.4em 0.9em;
-  border: 1px solid #dbe7f4;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.65);
-  transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
-    background-color 200ms ease, color 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
 }
 
-.pub-link svg {
-  width: 15px;
-  height: 15px;
-  fill: currentColor;
+.pub-meta-links a:hover {
+  color: var(--ink);
 }
 
-.pub-link:hover,
-.pub-link:focus-visible {
-  transform: translateY(-3px);
-  background: var(--blue-2);
-  color: #fff;
-  border-color: var(--blue-2);
-  text-decoration: none;
-  box-shadow: 0 8px 18px rgba(47, 109, 179, 0.28);
+.pub-meta-links .sep {
+  color: var(--faint);
+  margin: 0 0.5rem;
 }
 
 
@@ -1036,15 +966,6 @@ h1 {
 
   .skills {
     grid-template-columns: 1fr;
-  }
-
-  .pub-album {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .album-cover {
-    max-width: 200px;
   }
 
   .deck {
