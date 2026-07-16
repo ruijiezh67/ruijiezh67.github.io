@@ -226,7 +226,31 @@ if (deck) {
     startX = null;
   });
 
+  // gentle auto-drift — pauses on hover, interaction, or when the tab is hidden
+  const stage = deck.closest(".deck-stage") || deck;
+  let timer = null;
+  const AUTO_MS = 4500;
+  const startAuto = () => {
+    if (reduceMotion || timer) return;
+    timer = window.setInterval(() => go(active + 1), AUTO_MS);
+  };
+  const stopAuto = () => {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+  };
+  stage.addEventListener("pointerenter", stopAuto);
+  stage.addEventListener("pointerleave", startAuto);
+  stage.addEventListener("focusin", stopAuto);
+  stage.addEventListener("focusout", startAuto);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) stopAuto();
+    else startAuto();
+  });
+
   render();
+  startAuto();
 }
 
 // Nav scrollspy: highlight the section currently in view
