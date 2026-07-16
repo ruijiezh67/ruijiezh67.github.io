@@ -780,11 +780,36 @@ h1 {
   display: flex;
   align-items: flex-end;
   background: linear-gradient(135deg, var(--c1), var(--c2) 50%, var(--c3));
+  background-size: 220% 220%;
+  animation: coverFlow 9s ease-in-out infinite;
   box-shadow: 0 22px 44px rgba(20, 40, 70, 0.34);
   transform-style: preserve-3d;
   transition: transform 640ms cubic-bezier(0.22, 1, 0.36, 1),
     opacity 480ms ease, filter 480ms ease;
   will-change: transform, opacity;
+}
+
+.deck-card:nth-child(2n) { animation-delay: -2.2s; }
+.deck-card:nth-child(3n) { animation-delay: -4.4s; }
+.deck-card:nth-child(4n) { animation-delay: -6.6s; }
+
+/* light sweep on hover */
+.deck-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 32%, rgba(255, 255, 255, 0.4) 50%, transparent 68%);
+  transform: translateX(-130%);
+  pointer-events: none;
+}
+
+.deck-card:hover {
+  filter: brightness(1.12) !important;
+  box-shadow: 0 26px 52px rgba(20, 40, 70, 0.42);
+}
+
+.deck-card:hover::after {
+  animation: sheen 850ms ease;
 }
 
 .dc-no {
