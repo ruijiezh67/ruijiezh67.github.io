@@ -138,7 +138,7 @@ if (portrait && !reduceMotion) {
   portrait.addEventListener("click", spawn);
 }
 
-// Interactive 3D work deck — click a card, drag, use the arrows, or ‹ › buttons
+// Interactive 3D work deck — grab and drag to scrub, flick, click, arrows, or ‹ › buttons
 const deck = document.querySelector("#deck");
 if (deck) {
   const cards = [...deck.querySelectorAll(".deck-card")];
@@ -149,97 +149,180 @@ if (deck) {
   const countEl = document.querySelector("#deckCount");
   const prevBtn = document.querySelector("#deckPrev");
   const nextBtn = document.querySelector("#deckNext");
-  let active = 0;
+  const stage = deck.closest(".deck-stage") || deck;
 
   const pad = (x) => String(x).padStart(2, "0");
+  const STEP_PX = 115; // horizontal drag distance for one card
+
+  let pos = 0; // fractional position (which card is up front)
+  let target = 0; // where we're easing toward
+  let raf = null;
+  let dragging = false;
+  let lastInfo = -1;
+
+  // shortest signed distance from a card index to the current position, wrapped
+  const wrapDelta = (d) => {
+    d %= n;
+    if (d > n / 2) d -= n;
+    if (d <= -n / 2) d += n;
+    return d;
+  };
+
+  const place = (card, d) => {
+    let tx, ty, tz, ry, sc, op, br, zi;
+    if (d >= 0) {
+      // active (d≈0) up front; the rest fan up-and-right behind it
+      tx = d * 70;
+      ty = d * -46;
+      tz = d * -165;
+      ry = -6 - Math.min(d, 1) * 20;
+      sc = 1 - d * 0.04;
+      op = d > 4.4 ? 0 : 1;
+      br = 1 - Math.min(d, 4) * 0.12;
+      zi = 1000 - Math.round(d * 10);
+    } else {
+      // just-passed cards slide down-left toward the viewer and fade out
+      const a = -d;
+      tx = -a * 168;
+      ty = a * 46;
+      tz = a * 150;
+      ry = 6 + a * 30;
+      sc = 1 - a * 0.05;
+      op = Math.max(0, 1 - a * 1.15);
+      br = 1;
+      zi = 1400 - Math.round(a * 10);
+    }
+    card.style.transform = `translate3d(${tx}px, ${ty}px, ${tz}px) rotateY(${ry}deg) scale(${sc})`;
+    card.style.opacity = op;
+    card.style.filter = `brightness(${br})`;
+    card.style.zIndex = zi;
+    card.setAttribute("aria-hidden", op < 0.1 ? "true" : "false");
+    card.tabIndex = Math.abs(d) < 0.5 ? 0 : -1;
+  };
 
   const render = () => {
-    cards.forEach((card, i) => {
-      const d = i - active;
-      let tx, ty, tz, ry, sc, op, br, zi;
-      if (d < 0) {
-        // flipped past — slide toward the viewer and fade out
-        tx = -190 + d * 26;
-        ty = 48;
-        tz = 170;
-        ry = 34;
-        sc = 0.94;
-        op = 0;
-        br = 1;
-        zi = 0;
-      } else {
-        // active (d = 0) up front, the rest fan up-and-right behind it
-        tx = d * 48;
-        ty = d * -30;
-        tz = d * -140;
-        ry = d === 0 ? -6 : -24;
-        sc = 1 - d * 0.03;
-        op = d > 4 ? 0 : 1;
-        br = 1 - Math.min(d, 4) * 0.13;
-        zi = 100 - d;
-      }
-      card.style.transform = `translate3d(${tx}px, ${ty}px, ${tz}px) rotateY(${ry}deg) scale(${sc})`;
-      card.style.opacity = op;
-      card.style.filter = `brightness(${br})`;
-      card.style.zIndex = zi;
-      card.tabIndex = d === 0 ? 0 : -1;
-      card.setAttribute("aria-hidden", op === 0 ? "true" : "false");
-    });
-    const a = cards[active];
-    if (titleEl) titleEl.innerHTML = a.dataset.title;
-    if (metaEl) metaEl.innerHTML = a.dataset.meta;
-    if (linkEl) linkEl.setAttribute("href", a.dataset.href);
-    if (countEl) countEl.textContent = `${pad(active + 1)} / ${pad(n)}`;
+    cards.forEach((card, i) => place(card, wrapDelta(i - pos)));
+    const idx = ((Math.round(pos) % n) + n) % n;
+    if (idx !== lastInfo) {
+      lastInfo = idx;
+      const a = cards[idx];
+      if (titleEl) titleEl.innerHTML = a.dataset.title;
+      if (metaEl) metaEl.innerHTML = a.dataset.meta;
+      if (linkEl) linkEl.setAttribute("href", a.dataset.href);
+      if (countEl) countEl.textContent = `${pad(idx + 1)} / ${pad(n)}`;
+    }
   };
 
-  const go = (i) => {
-    active = ((i % n) + n) % n;
+  const animate = () => {
+    pos += (target - pos) * 0.16;
+    if (Math.abs(target - pos) < 0.0008) {
+      pos = target;
+      render();
+      raf = null;
+      return;
+    }
     render();
+    raf = requestAnimationFrame(animate);
   };
 
-  cards.forEach((card, i) => {
-    card.addEventListener("click", () => go(i === active ? active + 1 : i));
+  const tweenTo = (t) => {
+    target = t;
+    if (reduceMotion) {
+      pos = t;
+      render();
+      return;
+    }
+    if (!raf) raf = requestAnimationFrame(animate);
+  };
+
+  const step = (delta) => tweenTo(Math.round(target) + delta);
+
+  // --- pointer drag: cards follow the cursor 1:1, snap on release ---
+  let startX = 0;
+  let startPos = 0;
+  let moved = 0;
+  let vel = 0;
+  let lastX = 0;
+
+  deck.addEventListener("pointerdown", (e) => {
+    dragging = true;
+    startX = lastX = e.clientX;
+    startPos = pos;
+    moved = 0;
+    vel = 0;
+    stopAuto();
+    if (raf) {
+      cancelAnimationFrame(raf);
+      raf = null;
+    }
+    deck.classList.add("dragging");
+    if (deck.setPointerCapture) {
+      try {
+        deck.setPointerCapture(e.pointerId);
+      } catch (_) {}
+    }
   });
-  if (prevBtn) prevBtn.addEventListener("click", () => go(active - 1));
-  if (nextBtn) nextBtn.addEventListener("click", () => go(active + 1));
+
+  window.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    const dx = e.clientX - startX;
+    moved = Math.max(moved, Math.abs(dx));
+    vel = e.clientX - lastX;
+    lastX = e.clientX;
+    pos = startPos - dx / STEP_PX;
+    render();
+  });
+
+  const endDrag = () => {
+    if (!dragging) return;
+    dragging = false;
+    deck.classList.remove("dragging");
+    // a flick carries a little momentum
+    const flick = Math.abs(vel) > 6 ? Math.sign(vel) * -1 : 0;
+    tweenTo(Math.round(pos) + flick);
+    startAuto();
+  };
+  window.addEventListener("pointerup", endDrag);
+  window.addEventListener("pointercancel", endDrag);
+
+  // click a card to bring it to the front (ignored right after a drag)
+  cards.forEach((card, i) => {
+    card.addEventListener("click", (e) => {
+      if (moved > 6) {
+        e.preventDefault();
+        return;
+      }
+      const rounded = Math.round(target);
+      const delta = wrapDelta(i - ((rounded % n) + n) % n);
+      tweenTo(rounded + (Math.abs(delta) < 0.5 ? 1 : delta));
+    });
+  });
+
+  if (prevBtn) prevBtn.addEventListener("click", () => step(-1));
+  if (nextBtn) nextBtn.addEventListener("click", () => step(1));
 
   deck.addEventListener("keydown", (e) => {
     if (e.key === "ArrowRight" || e.key === "ArrowDown") {
       e.preventDefault();
-      go(active + 1);
+      step(1);
     } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
       e.preventDefault();
-      go(active - 1);
+      step(-1);
     }
   });
 
-  // pointer drag / swipe
-  let startX = null;
-  deck.addEventListener("pointerdown", (e) => {
-    startX = e.clientX;
-  });
-  window.addEventListener("pointerup", (e) => {
-    if (startX === null) return;
-    const dx = e.clientX - startX;
-    if (dx < -45) go(active + 1);
-    else if (dx > 45) go(active - 1);
-    startX = null;
-  });
-
-  // gentle auto-drift — pauses on hover, interaction, or when the tab is hidden
-  const stage = deck.closest(".deck-stage") || deck;
+  // gentle auto-drift — pauses on hover, drag, or when the tab is hidden
   let timer = null;
-  const AUTO_MS = 4500;
-  const startAuto = () => {
-    if (reduceMotion || timer) return;
-    timer = window.setInterval(() => go(active + 1), AUTO_MS);
-  };
-  const stopAuto = () => {
+  function startAuto() {
+    if (reduceMotion || timer || dragging) return;
+    timer = window.setInterval(() => step(1), 4600);
+  }
+  function stopAuto() {
     if (timer) {
       clearInterval(timer);
       timer = null;
     }
-  };
+  }
   stage.addEventListener("pointerenter", stopAuto);
   stage.addEventListener("pointerleave", startAuto);
   stage.addEventListener("focusin", stopAuto);
