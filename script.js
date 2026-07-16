@@ -143,9 +143,12 @@ const deck = document.querySelector("#deck");
 if (deck) {
   const cards = [...deck.querySelectorAll(".deck-card")];
   const n = cards.length;
-  const titleEl = document.querySelector("#deckTitle");
-  const metaEl = document.querySelector("#deckMeta");
-  const linkEl = document.querySelector("#deckLink");
+  const detailEl = document.querySelector("#deckDetail");
+  const ddTag = document.querySelector("#ddTag");
+  const ddTitle = document.querySelector("#ddTitle");
+  const ddAffil = document.querySelector("#ddAffil");
+  const ddDesc = document.querySelector("#ddDesc");
+  const ddLink = document.querySelector("#ddLink");
   const countEl = document.querySelector("#deckCount");
   const prevBtn = document.querySelector("#deckPrev");
   const nextBtn = document.querySelector("#deckNext");
@@ -172,9 +175,9 @@ if (deck) {
     let tx, ty, tz, ry, sc, op, br, zi;
     if (d >= 0) {
       // active (d≈0) up front; the rest fan up-and-right behind it
-      tx = d * 70;
-      ty = d * -46;
-      tz = d * -165;
+      tx = d * 44;
+      ty = d * -38;
+      tz = d * -140;
       ry = -6 - Math.min(d, 1) * 20;
       sc = 1 - d * 0.04;
       op = d > 4.4 ? 0 : 1;
@@ -183,9 +186,9 @@ if (deck) {
     } else {
       // just-passed cards slide down-left toward the viewer and fade out
       const a = -d;
-      tx = -a * 168;
-      ty = a * 46;
-      tz = a * 150;
+      tx = -a * 132;
+      ty = a * 40;
+      tz = a * 140;
       ry = 6 + a * 30;
       sc = 1 - a * 0.05;
       op = Math.max(0, 1 - a * 1.15);
@@ -206,10 +209,17 @@ if (deck) {
     if (idx !== lastInfo) {
       lastInfo = idx;
       const a = cards[idx];
-      if (titleEl) titleEl.innerHTML = a.dataset.title;
-      if (metaEl) metaEl.innerHTML = a.dataset.meta;
-      if (linkEl) linkEl.setAttribute("href", a.dataset.href);
+      if (ddTag) ddTag.textContent = a.dataset.tag;
+      if (ddTitle) ddTitle.textContent = a.dataset.title;
+      if (ddAffil) ddAffil.textContent = a.dataset.affil;
+      if (ddDesc) ddDesc.textContent = a.dataset.desc;
+      if (ddLink) ddLink.setAttribute("href", a.dataset.href);
       if (countEl) countEl.textContent = `${pad(idx + 1)} / ${pad(n)}`;
+      if (detailEl) {
+        detailEl.classList.remove("dd-in");
+        void detailEl.offsetWidth;
+        detailEl.classList.add("dd-in");
+      }
     }
   };
 
@@ -335,6 +345,19 @@ if (deck) {
   render();
   startAuto();
 }
+
+// Foldable "full experience" lists
+document.querySelectorAll(".fold-toggle").forEach((btn) => {
+  const fold = document.getElementById(btn.getAttribute("aria-controls"));
+  const label = btn.querySelector(".ft-label");
+  if (!fold) return;
+  btn.addEventListener("click", () => {
+    const open = fold.classList.toggle("open");
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    if (label) label.textContent = open ? "Hide full experience" : "Show full experience";
+    if (open) fold.querySelectorAll(".reveal").forEach((el) => el.classList.add("in-view"));
+  });
+});
 
 // Nav scrollspy: highlight the section currently in view
 const sections = [...document.querySelectorAll("section[id]")];
