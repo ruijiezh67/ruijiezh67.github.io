@@ -615,6 +615,8 @@ h1 {
   color: var(--ink);
   text-decoration: none;
   padding: 0.02em 0.1em;
+  /* cancel the highlight padding so linked and unlinked titles share one left edge */
+  margin: 0 -0.1em;
   border-radius: 4px;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
