@@ -32,7 +32,8 @@
 :root {
   --bg: #ffffff;
   --ink: #1f2328;
-  --muted: #6b7280;
+  --muted: #5f6672;
+  --label: #5b6270; /* section labels: >= 4.5:1 on the pastel ground */
   --faint: #9aa1ab;
   --line: #ececec;
   --accent: #2f6db3;
@@ -73,7 +74,7 @@ body {
   background-repeat: repeat, no-repeat, no-repeat, no-repeat, no-repeat;
   color: var(--ink);
   font-family: var(--font-serif);
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -97,6 +98,36 @@ h2,
 h3,
 p {
   margin: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* land section headings below the sticky header, not under it */
+section[id] {
+  scroll-margin-top: 4.75rem;
+}
+
+a,
+button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1,
+h2,
+h3,
+.dd-title {
+  text-wrap: balance;
+}
+
+.prose p,
+.entry-body p,
+.dd-desc {
+  text-wrap: pretty;
 }
 
 .skip-link {
@@ -125,9 +156,16 @@ p {
   justify-content: space-between;
   gap: 1rem;
   padding: 0.85rem clamp(1rem, 5vw, 2rem);
-  background: rgba(255, 255, 255, 0.82);
-  border-bottom: 1px solid var(--line);
-  backdrop-filter: saturate(180%) blur(12px);
+  background: rgba(255, 255, 255, 0.72);
+  border-bottom: 1px solid transparent;
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  transition: border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.site-header.is-scrolled {
+  border-bottom-color: var(--line);
+  box-shadow: 0 6px 22px rgba(30, 60, 100, 0.06);
 }
 
 .brand {
@@ -177,6 +215,13 @@ p {
 .nav-links a:hover::after,
 .nav-links a.is-active::after {
   transform: scaleX(1);
+}
+
+/* text buttons dim the instant they're pressed */
+.nav-links a:active,
+.brand:active {
+  opacity: 0.55;
+  transition-duration: 0ms;
 }
 
 /* ---------- Layout ---------- */
@@ -255,7 +300,8 @@ h1 {
   font-family: var(--font-latex);
   font-size: clamp(2.1rem, 6vw, 2.9rem);
   font-weight: 700;
-  letter-spacing: 0;
+  line-height: 1.1;
+  letter-spacing: -0.012em;
 }
 
 .tagline {
@@ -341,8 +387,8 @@ h1 {
   background: #eef4fb;
   border: 1px solid #dbe7f4;
   color: var(--blue-2);
-  transition: transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1),
-    background-color 200ms ease, color 200ms ease, box-shadow 240ms ease,
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 200ms ease, color 200ms ease, box-shadow 280ms ease,
     border-color 200ms ease;
 }
 
@@ -350,12 +396,12 @@ h1 {
   width: 29px;
   height: 29px;
   fill: currentColor;
-  transition: transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .ic:hover,
 .ic:focus-visible {
-  transform: translateY(-8px) scale(1.14) rotate(4deg);
+  transform: translateY(-6px) scale(1.1);
   text-decoration: none;
   box-shadow: 0 14px 24px rgba(47, 109, 179, 0.24);
 }
@@ -366,7 +412,8 @@ h1 {
 }
 
 .ic:active {
-  transform: translateY(-2px) scale(1.02);
+  transform: translateY(-2px) scale(0.94);
+  transition-duration: 90ms;
 }
 
 /* text-link variant (contact) → interactive pills */
@@ -381,8 +428,8 @@ h1 {
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.65);
   color: var(--blue-2);
-  transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
-    background-color 200ms ease, color 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 200ms ease, color 200ms ease, box-shadow 240ms ease, border-color 200ms ease;
 }
 
 .social:not(.social-icons) a:hover,
@@ -393,6 +440,11 @@ h1 {
   border-color: var(--blue-2);
   text-decoration: none;
   box-shadow: 0 8px 18px rgba(47, 109, 179, 0.28);
+}
+
+.social:not(.social-icons) a:active {
+  transform: scale(0.96);
+  transition-duration: 90ms;
 }
 
 /* each icon a different shade of blue */
@@ -423,7 +475,7 @@ h1 {
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--faint);
+  color: var(--label);
   margin-bottom: 1.2rem;
 }
 
@@ -571,7 +623,7 @@ h1 {
   padding: 1.5rem 0 2.5rem;
   border-top: 1px solid var(--line);
   font-family: var(--font-sans);
-  color: var(--faint);
+  color: var(--muted);
   font-size: 0.82rem;
 }
 
@@ -676,7 +728,7 @@ h1 {
   font-size: 0.66rem;
   font-weight: 600;
   letter-spacing: 0.1em;
-  color: var(--blue-4);
+  color: var(--blue-2);
   margin-left: 0.5rem;
 }
 
@@ -704,6 +756,11 @@ h1 {
   cursor: grabbing;
 }
 
+.deck:focus-visible {
+  outline-offset: 6px;
+  border-radius: 18px;
+}
+
 .deck-card {
   position: absolute;
   left: 50%;
@@ -714,7 +771,7 @@ h1 {
   padding: 16px;
   border: 3px solid rgba(255, 255, 255, 0.85);
   border-radius: 18px;
-  cursor: grab;
+  cursor: pointer; /* back cards: tap to bring forward */
   overflow: hidden;
   display: flex;
   align-items: flex-end;
@@ -727,8 +784,13 @@ h1 {
   will-change: transform, opacity;
 }
 
+.deck-card.is-front {
+  cursor: grab;
+}
+
 .deck.dragging .deck-card {
   transition: none;
+  cursor: grabbing;
 }
 
 .deck-card:nth-child(2n) { animation-delay: -2.2s; }
@@ -862,12 +924,26 @@ h1 {
 }
 
 .deck-detail.dd-in {
-  animation: ddIn 420ms ease;
+  animation: ddInNext 380ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@keyframes ddIn {
-  from { opacity: 0; transform: translateY(10px); }
+.deck-detail.dd-in[data-dir="prev"] {
+  animation-name: ddInPrev;
+}
+
+@keyframes ddInNext {
+  from { opacity: 0; transform: translateX(14px); }
   to { opacity: 1; transform: none; }
+}
+
+@keyframes ddInPrev {
+  from { opacity: 0; transform: translateX(-14px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes ddFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .deck-nav {
@@ -878,8 +954,8 @@ h1 {
 }
 
 .deck-nav button {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: 1px solid #dbe7f4;
   background: rgba(255, 255, 255, 0.7);
@@ -887,8 +963,8 @@ h1 {
   font-size: 1.2rem;
   line-height: 1;
   cursor: pointer;
-  transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
-    background-color 200ms ease, color 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 200ms ease, color 200ms ease, box-shadow 240ms ease, border-color 200ms ease;
 }
 
 .deck-nav button:hover {
@@ -897,6 +973,11 @@ h1 {
   color: #fff;
   border-color: var(--blue-2);
   box-shadow: 0 8px 18px rgba(47, 109, 179, 0.28);
+}
+
+.deck-nav button:active {
+  transform: scale(0.92);
+  transition-duration: 80ms;
 }
 
 .deck-count {
@@ -938,8 +1019,8 @@ h1 {
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.7);
   cursor: pointer;
-  transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
-    background-color 200ms ease, color 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 200ms ease, color 200ms ease, box-shadow 240ms ease, border-color 200ms ease;
 }
 
 .fold-toggle:hover {
@@ -947,6 +1028,11 @@ h1 {
   background: rgba(47, 109, 179, 0.1);
   border-color: rgba(47, 109, 179, 0.4);
   box-shadow: 0 8px 18px rgba(47, 109, 179, 0.18);
+}
+
+.fold-toggle:active {
+  transform: scale(0.96);
+  transition-duration: 80ms;
 }
 
 .fold-toggle .ft-count {
@@ -969,7 +1055,9 @@ h1 {
 .fold {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 460ms cubic-bezier(0.22, 1, 0.36, 1);
+  /* animate the gap with the height so opening doesn't jump */
+  transition: grid-template-rows 460ms cubic-bezier(0.22, 1, 0.36, 1),
+    margin-top 460ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .fold.open {
@@ -1027,14 +1115,82 @@ h1 {
     filter: none;
     transition: none;
   }
-  .album-cover,
-  .disc-cover {
+  .deck-card,
+  .deck-card:hover::after {
     animation: none;
+  }
+  .deck-detail.dd-in,
+  .deck-detail.dd-in[data-dir="prev"] {
+    animation-name: ddFade;
+  }
+  .portrait-frame::after {
+    transition: none;
+  }
+  /* keep color feedback on hover, drop the movement */
+  .ic:hover,
+  .ic:focus-visible,
+  .ic:hover svg,
+  .ic:focus-visible svg,
+  .social:not(.social-icons) a:hover,
+  .deck-nav button:hover,
+  .fold-toggle:hover,
+  .portrait-frame:hover .portrait,
+  .entry:hover .logo-chip {
+    transform: none;
+  }
+}
+
+/* Touch screens: no sticky hover lifts after a tap; presses still respond instantly */
+@media (hover: none) {
+  .ic:hover,
+  .ic:hover svg,
+  .social:not(.social-icons) a:hover,
+  .deck-nav button:hover,
+  .fold-toggle:hover,
+  .portrait-frame:hover .portrait,
+  .entry:hover .logo-chip {
+    transform: none;
+  }
+  .ic:active {
+    transform: scale(0.94);
+  }
+  .social:not(.social-icons) a:active,
+  .fold-toggle:active {
+    transform: scale(0.96);
+  }
+  .deck-nav button:active {
+    transform: scale(0.92);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .site-header {
+    background: #fff;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .site-header {
+    background: #fff;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-bottom-color: var(--ink);
+  }
+  :root {
+    --muted: #3f4550;
+    --label: #3f4550;
+    --line: #9aa1ab;
   }
 }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 640px) {
+  section[id] {
+    scroll-margin-top: 6.75rem;
+  }
+
   .site-header {
     flex-direction: column;
     align-items: flex-start;

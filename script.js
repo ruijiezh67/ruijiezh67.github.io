@@ -4,38 +4,76 @@ if (yearElement) {
   yearElement.textContent = String(new Date().getFullYear());
 }
 
-// Scroll progress bar: fills with scroll depth and shifts hue by page position
+// Scroll-linked chrome: progress bar, header edge, and nav scrollspy share one rAF
 const progressBar = document.querySelector("#scrollProgress");
-if (progressBar) {
-  let ticking = false;
-  const updateProgress = () => {
-    const doc = document.documentElement;
-    const max = doc.scrollHeight - doc.clientHeight;
-    const pct = max > 0 ? Math.min(1, doc.scrollTop / max) : 0;
+const header = document.querySelector(".site-header");
+const spyPairs = [...document.querySelectorAll(".nav-links a")]
+  .map((link) => [link, document.getElementById(link.hash.slice(1))])
+  .filter(([, section]) => section);
+let activeLink = null;
+let scrollTicking = false;
+
+const updateScrollChrome = () => {
+  scrollTicking = false;
+  // read layout first, then write, so scrolling never forces a synchronous reflow
+  const doc = document.documentElement;
+  const max = doc.scrollHeight - doc.clientHeight;
+  const pct = max > 0 ? Math.min(1, doc.scrollTop / max) : 0;
+  const readingLine = doc.clientHeight * 0.3;
+  let current = null;
+  for (const [link, section] of spyPairs) {
+    if (section.getBoundingClientRect().top <= readingLine) current = link;
+  }
+  if (pct > 0.995 && spyPairs.length) current = spyPairs[spyPairs.length - 1][0];
+
+  if (progressBar) {
     // hue travels blue (210) -> violet -> pink (330) as you go top -> bottom
     const hue = 210 + pct * 120;
     progressBar.style.width = (pct * 100).toFixed(2) + "%";
     progressBar.style.background = `hsl(${hue.toFixed(0)}, 72%, 56%)`;
     progressBar.style.boxShadow = `0 0 12px hsla(${hue.toFixed(0)}, 72%, 56%, 0.6)`;
-    ticking = false;
-  };
-  const onScroll = () => {
-    if (!ticking) {
-      ticking = true;
-      requestAnimationFrame(updateProgress);
+  }
+  // the header's edge only appears once content is actually scrolling beneath it
+  if (header) header.classList.toggle("is-scrolled", doc.scrollTop > 4);
+  if (current !== activeLink) {
+    if (activeLink) {
+      activeLink.classList.remove("is-active");
+      activeLink.removeAttribute("aria-current");
     }
-  };
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onScroll, { passive: true });
-  updateProgress();
-}
+    if (current) {
+      current.classList.add("is-active");
+      current.setAttribute("aria-current", "location");
+    }
+    activeLink = current;
+  }
+};
+
+const onScrollChrome = () => {
+  if (!scrollTicking) {
+    scrollTicking = true;
+    requestAnimationFrame(updateScrollChrome);
+  }
+};
+window.addEventListener("scroll", onScrollChrome, { passive: true });
+window.addEventListener("resize", onScrollChrome, { passive: true });
+updateScrollChrome();
 
 // Scroll reveal: fade + rise elements into view as they enter the viewport
 const revealEls = [...document.querySelectorAll(".reveal, .reveal-photo")];
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+// Once revealed, drop the reveal styles so each component's own, faster hover and
+// press transitions apply again (the reveal transition and stagger delay would lag them)
+const finishReveal = (el) => {
+  el.classList.remove("reveal", "reveal-photo");
+  el.style.transitionDelay = "";
+};
+
 if (reduceMotion || !("IntersectionObserver" in window)) {
-  revealEls.forEach((el) => el.classList.add("in-view"));
+  revealEls.forEach((el) => {
+    el.classList.add("in-view");
+    finishReveal(el);
+  });
 } else {
   const revealObserver = new IntersectionObserver(
     (entries, obs) => {
@@ -54,6 +92,11 @@ if (reduceMotion || !("IntersectionObserver" in window)) {
     const group = el.parentElement;
     const index = group ? [...group.children].indexOf(el) : 0;
     el.style.transitionDelay = `${Math.min(index, 6) * 55}ms`;
+    el.addEventListener("transitionend", function onRevealEnd(e) {
+      if (e.target !== el || e.pseudoElement || !el.classList.contains("in-view")) return;
+      el.removeEventListener("transitionend", onRevealEnd);
+      finishReveal(el);
+    });
     revealObserver.observe(el);
   });
 }
@@ -109,16 +152,20 @@ if (portrait && !reduceMotion) {
     }
   };
 
-  const tick = () => {
+  let lastTick = 0;
+  const tick = (now) => {
+    // scale the per-frame physics by real elapsed time so 120Hz screens don't run it double speed
+    const k = lastTick ? Math.min(3, (now - lastTick) / (1000 / 60)) : 1;
+    lastTick = now;
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     pieces = pieces.filter((p) => p.life < p.ttl);
     for (const p of pieces) {
-      p.life++;
-      p.vy += 0.16;
-      p.vx *= 0.99;
-      p.x += p.vx;
-      p.y += p.vy;
-      p.rot += p.vr;
+      p.life += k;
+      p.vy += 0.16 * k;
+      p.vx *= Math.pow(0.99, k);
+      p.x += p.vx * k;
+      p.y += p.vy * k;
+      p.rot += p.vr * k;
       ctx.save();
       ctx.translate(p.x, p.y);
       ctx.rotate(p.rot);
@@ -131,6 +178,7 @@ if (portrait && !reduceMotion) {
       requestAnimationFrame(tick);
     } else {
       running = false;
+      lastTick = 0;
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     }
   };
@@ -199,14 +247,22 @@ if (deck) {
     card.style.opacity = op;
     card.style.filter = `brightness(${br})`;
     card.style.zIndex = zi;
+    // faded-out cards sit above the stack (higher z-index): keep them from swallowing clicks and hover
+    card.style.pointerEvents = op < 0.1 ? "none" : "";
     card.setAttribute("aria-hidden", op < 0.1 ? "true" : "false");
+    card.classList.toggle("is-front", Math.abs(d) < 0.5);
     card.tabIndex = Math.abs(d) < 0.5 ? 0 : -1;
   };
 
   const render = () => {
     cards.forEach((card, i) => place(card, wrapDelta(i - pos)));
-    const idx = ((Math.round(pos) % n) + n) % n;
+    // While dragging, details follow the finger; otherwise they show the destination at once,
+    // so a tap on a back card updates the text immediately instead of flickering through each card
+    const shown = dragging ? pos : target;
+    const idx = ((Math.round(shown) % n) + n) % n;
     if (idx !== lastInfo) {
+      // content slides in from the side the deck is moving toward
+      if (detailEl && lastInfo !== -1) detailEl.dataset.dir = wrapDelta(idx - lastInfo) < 0 ? "prev" : "next";
       lastInfo = idx;
       const a = cards[idx];
       if (ddTag) ddTag.textContent = a.dataset.tag;
@@ -276,19 +332,36 @@ if (deck) {
   const DECELERATION = 0.99; // Apple's momentum projection, snappy variant
   const project = (v) => ((v / 1000) * DECELERATION) / (1 - DECELERATION);
 
+  const TAP_SLOP = 8; // px of movement still treated as a tap rather than a drag
   let startX = 0;
   let startPos = 0;
   let moved = 0;
   let samples = []; // recent pointer positions for release velocity
 
+  // Bring card i to the front along the shortest path; tapping the front card advances, as before
+  const bringToFront = (i) => {
+    const base = Math.round(pos);
+    const delta = wrapDelta(i - (((base % n) + n) % n));
+    tweenTo(base + (delta === 0 ? 1 : delta));
+  };
+
+  // Pointer capture retargets the click to the deck, so taps are resolved by hit-testing
+  // the release point; only visible cards count
+  const cardAt = (x, y) =>
+    document
+      .elementsFromPoint(x, y)
+      .map((el) => el.closest(".deck-card"))
+      .find((card) => card && deck.contains(card) && parseFloat(card.style.opacity) > 0.1);
+
   deck.addEventListener("pointerdown", (e) => {
+    if (e.button > 0) return; // ignore right/middle clicks
     dragging = true;
     startX = e.clientX;
     startPos = pos; // grab from the on-screen value, never the target
     moved = 0;
     vel = 0;
     samples = [{ x: e.clientX, t: e.timeStamp }];
-    stopAuto();
+    takeControl();
     if (raf) {
       cancelAnimationFrame(raf);
       raf = null;
@@ -316,6 +389,13 @@ if (deck) {
     dragging = false;
     deck.classList.remove("dragging");
 
+    if (e.type === "pointerup" && moved < TAP_SLOP) {
+      const card = cardAt(e.clientX, e.clientY);
+      if (card) bringToFront(cards.indexOf(card));
+      else tweenTo(Math.round(pos)); // tapped empty stage: just settle
+      return;
+    }
+
     // Release velocity (px/s) over the last ~100ms; zero if the pointer had come to rest
     const first = samples[0];
     const last = samples[samples.length - 1];
@@ -333,41 +413,41 @@ if (deck) {
       dest = cardVel > 0 ? Math.max(dest, Math.floor(pos) + 1) : Math.min(dest, Math.ceil(pos) - 1);
     }
     tweenTo(dest, { velocity: cardVel, flick });
-    startAuto();
   };
   window.addEventListener("pointerup", endDrag);
   window.addEventListener("pointercancel", endDrag);
 
-  // click a card to bring it to the front (ignored right after a drag)
+  // Keyboard activation (Enter/Space on the focused card); pointer taps are handled in endDrag
   cards.forEach((card, i) => {
     card.addEventListener("click", (e) => {
-      if (moved > 6) {
-        e.preventDefault();
-        return;
-      }
-      const rounded = Math.round(target);
-      const delta = wrapDelta(i - ((rounded % n) + n) % n);
-      tweenTo(rounded + (Math.abs(delta) < 0.5 ? 1 : delta));
+      if (e.detail !== 0) return;
+      takeControl();
+      bringToFront(i);
     });
   });
 
-  if (prevBtn) prevBtn.addEventListener("click", () => step(-1));
-  if (nextBtn) nextBtn.addEventListener("click", () => step(1));
+  if (prevBtn) prevBtn.addEventListener("click", () => (takeControl(), step(-1)));
+  if (nextBtn) nextBtn.addEventListener("click", () => (takeControl(), step(1)));
 
   deck.addEventListener("keydown", (e) => {
     if (e.key === "ArrowRight" || e.key === "ArrowDown") {
       e.preventDefault();
+      takeControl();
       step(1);
     } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
       e.preventDefault();
+      takeControl();
       step(-1);
     }
   });
 
-  // gentle auto-drift — pauses on hover, drag, or when the tab is hidden
+  // Gentle auto-drift, only until the visitor takes control: once they pick a card,
+  // it stays put. It also pauses on hover, while offscreen, and in a hidden tab.
   let timer = null;
+  let userControlled = false;
+  let deckOnScreen = false;
   function startAuto() {
-    if (reduceMotion || timer || dragging) return;
+    if (reduceMotion || timer || dragging || userControlled || !deckOnScreen || document.hidden) return;
     timer = window.setInterval(() => step(1), 4600);
   }
   function stopAuto() {
@@ -375,6 +455,10 @@ if (deck) {
       clearInterval(timer);
       timer = null;
     }
+  }
+  function takeControl() {
+    userControlled = true;
+    stopAuto();
   }
   stage.addEventListener("pointerenter", stopAuto);
   stage.addEventListener("pointerleave", startAuto);
@@ -384,6 +468,15 @@ if (deck) {
     if (document.hidden) stopAuto();
     else startAuto();
   });
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([entry]) => {
+      deckOnScreen = entry.isIntersecting;
+      if (deckOnScreen) startAuto();
+      else stopAuto();
+    }, { threshold: 0.35 }).observe(stage);
+  } else {
+    deckOnScreen = true;
+  }
 
   render();
   startAuto();
@@ -401,23 +494,3 @@ document.querySelectorAll(".fold-toggle").forEach((btn) => {
     if (open) fold.querySelectorAll(".reveal").forEach((el) => el.classList.add("in-view"));
   });
 });
-
-// Nav scrollspy: highlight the section currently in view
-const sections = [...document.querySelectorAll("section[id]")];
-const navLinks = [...document.querySelectorAll(".nav-links a")];
-
-if (sections.length && navLinks.length) {
-  const spy = new IntersectionObserver(
-    (entries) => {
-      const visible = entries
-        .filter((e) => e.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (!visible) return;
-      navLinks.forEach((link) =>
-        link.classList.toggle("is-active", link.getAttribute("href") === `#${visible.target.id}`)
-      );
-    },
-    { rootMargin: "-25% 0px -60% 0px", threshold: [0.1, 0.25, 0.5] }
-  );
-  sections.forEach((section) => spy.observe(section));
-}
