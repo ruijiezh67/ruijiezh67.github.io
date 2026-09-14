@@ -223,10 +223,28 @@ if (deck) {
     }
   };
 
-  const animate = () => {
-    pos += (target - pos) * 0.16;
-    if (Math.abs(target - pos) < 0.0008) {
+  // Spring physics using Apple's response/damping model: frame-rate independent,
+  // interruptible, and velocity carries through every re-target (no "brick wall").
+  const SETTLE = { response: 0.42, damping: 1 }; // calm default, no overshoot
+  const FLICK = { response: 0.42, damping: 0.8 }; // slight bounce, only after a real flick
+  let spring = SETTLE;
+  let vel = 0; // cards per second
+  let lastFrame = 0;
+
+  const animate = (now) => {
+    const dt = Math.min(0.064, Math.max(0, (now - lastFrame) / 1000));
+    lastFrame = now;
+    const stiffness = ((2 * Math.PI) / spring.response) ** 2;
+    const friction = (4 * Math.PI * spring.damping) / spring.response;
+    const steps = Math.max(1, Math.ceil(dt * 240));
+    const h = dt / steps;
+    for (let s = 0; s < steps; s++) {
+      vel += (-stiffness * (pos - target) - friction * vel) * h;
+      pos += vel * h;
+    }
+    if (Math.abs(target - pos) < 0.0008 && Math.abs(vel) < 0.01) {
       pos = target;
+      vel = 0;
       render();
       raf = null;
       return;
@@ -235,31 +253,41 @@ if (deck) {
     raf = requestAnimationFrame(animate);
   };
 
-  const tweenTo = (t) => {
+  const tweenTo = (t, { velocity, flick = false } = {}) => {
     target = t;
+    spring = flick ? FLICK : SETTLE;
+    if (velocity !== undefined) vel = velocity;
     if (reduceMotion) {
       pos = t;
+      vel = 0;
       render();
       return;
     }
-    if (!raf) raf = requestAnimationFrame(animate);
+    if (!raf) {
+      lastFrame = performance.now();
+      raf = requestAnimationFrame(animate);
+    }
   };
 
   const step = (delta) => tweenTo(Math.round(target) + delta);
 
-  // --- pointer drag: cards follow the cursor 1:1, snap on release ---
+  // --- pointer drag: cards track the pointer 1:1; on release the pointer's
+  // velocity is handed to the spring and projected forward like a real throw ---
+  const DECELERATION = 0.99; // Apple's momentum projection, snappy variant
+  const project = (v) => ((v / 1000) * DECELERATION) / (1 - DECELERATION);
+
   let startX = 0;
   let startPos = 0;
   let moved = 0;
-  let vel = 0;
-  let lastX = 0;
+  let samples = []; // recent pointer positions for release velocity
 
   deck.addEventListener("pointerdown", (e) => {
     dragging = true;
-    startX = lastX = e.clientX;
-    startPos = pos;
+    startX = e.clientX;
+    startPos = pos; // grab from the on-screen value, never the target
     moved = 0;
     vel = 0;
+    samples = [{ x: e.clientX, t: e.timeStamp }];
     stopAuto();
     if (raf) {
       cancelAnimationFrame(raf);
@@ -277,19 +305,34 @@ if (deck) {
     if (!dragging) return;
     const dx = e.clientX - startX;
     moved = Math.max(moved, Math.abs(dx));
-    vel = e.clientX - lastX;
-    lastX = e.clientX;
+    samples.push({ x: e.clientX, t: e.timeStamp });
+    while (samples.length > 2 && e.timeStamp - samples[0].t > 100) samples.shift();
     pos = startPos - dx / STEP_PX;
     render();
   });
 
-  const endDrag = () => {
+  const endDrag = (e) => {
     if (!dragging) return;
     dragging = false;
     deck.classList.remove("dragging");
-    // a flick carries a little momentum
-    const flick = Math.abs(vel) > 6 ? Math.sign(vel) * -1 : 0;
-    tweenTo(Math.round(pos) + flick);
+
+    // Release velocity (px/s) over the last ~100ms; zero if the pointer had come to rest
+    const first = samples[0];
+    const last = samples[samples.length - 1];
+    let pxPerSec = 0;
+    if (e.type === "pointerup" && last.t > first.t && e.timeStamp - last.t < 80) {
+      pxPerSec = ((last.x - first.x) / (last.t - first.t)) * 1000;
+    }
+    const cardVel = -pxPerSec / STEP_PX;
+    const flick = Math.abs(pxPerSec) > 300;
+
+    // Snap to the card nearest where the gesture is going, not where it was released
+    let dest = Math.round(pos + Math.max(-2, Math.min(2, project(cardVel))));
+    if (flick) {
+      // a deliberate flick always commits at least one card in its direction
+      dest = cardVel > 0 ? Math.max(dest, Math.floor(pos) + 1) : Math.min(dest, Math.ceil(pos) - 1);
+    }
+    tweenTo(dest, { velocity: cardVel, flick });
     startAuto();
   };
   window.addEventListener("pointerup", endDrag);
