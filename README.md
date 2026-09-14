@@ -12,7 +12,7 @@ chips, scroll-reveal animations, and a confetti burst when you click the portrai
 - `index.html` — page content and structured metadata (JSON-LD)
 - `styles.css` — responsive design, fonts, background pattern, animations
 - `script.js` — scroll progress bar, scroll-reveal, nav scroll-spy, footer year, avatar confetti
-- `assets/avatar.jpg` — profile photo
+- `assets/ruijie-zheng.jpg` — profile photo (3:4 portrait)
 - `assets/Ruijie_Zheng_CV.pdf` — downloadable CV
 - `assets/GAM_UIST2026_demo.pdf` / `.mp4` — UIST 2026 demo paper and video
 - `assets/logos/` — institution logos (Michigan, Northwestern, SJTU)
