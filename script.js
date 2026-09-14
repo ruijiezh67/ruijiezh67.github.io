@@ -4,42 +4,6 @@ if (yearElement) {
   yearElement.textContent = String(new Date().getFullYear());
 }
 
-const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-// Glass lens that slides (on a spring, in CSS) behind the active nav link
-const navEl = document.querySelector(".nav-links");
-const navLens = navEl ? document.createElement("span") : null;
-if (navLens) {
-  navLens.className = "nav-lens";
-  navLens.setAttribute("aria-hidden", "true");
-  navEl.prepend(navLens);
-}
-
-const moveLens = (link, instant = false) => {
-  if (!navLens) return;
-  if (!link) {
-    navLens.style.opacity = "0";
-    return;
-  }
-  // appear in place the first time instead of flying in from the left edge
-  const jump = instant || navLens.style.opacity !== "1";
-  navLens.classList.toggle("no-anim", jump);
-  navLens.style.width = `${link.offsetWidth}px`;
-  navLens.style.transform = `translateX(${link.offsetLeft}px)`;
-  navLens.style.opacity = "1";
-  if (jump) {
-    void navLens.offsetWidth;
-    navLens.classList.remove("no-anim");
-  }
-  // on phones the nav scrolls sideways: keep the active link in view
-  if (navEl.scrollWidth > navEl.clientWidth) {
-    navEl.scrollTo({
-      left: link.offsetLeft - (navEl.clientWidth - link.offsetWidth) / 2,
-      behavior: jump || reduceMotion ? "auto" : "smooth",
-    });
-  }
-};
-
 // Scroll-linked chrome: progress bar, header edge, and nav scrollspy share one rAF
 const progressBar = document.querySelector("#scrollProgress");
 const header = document.querySelector(".site-header");
@@ -48,32 +12,6 @@ const spyPairs = [...document.querySelectorAll(".nav-links a")]
   .filter(([, section]) => section);
 let activeLink = null;
 let scrollTicking = false;
-let navLockUntil = 0; // after a nav click, hold the lens on the target while the page scrolls there
-
-const setActiveLink = (link) => {
-  if (link === activeLink) return;
-  if (activeLink) {
-    activeLink.classList.remove("is-active");
-    activeLink.removeAttribute("aria-current");
-  }
-  if (link) {
-    link.classList.add("is-active");
-    link.setAttribute("aria-current", "location");
-  }
-  activeLink = link;
-  moveLens(link);
-};
-
-spyPairs.forEach(([link]) => {
-  link.addEventListener("click", () => {
-    navLockUntil = performance.now() + 1200;
-    setActiveLink(link);
-  });
-});
-window.addEventListener("scrollend", () => {
-  navLockUntil = 0;
-  onScrollChrome();
-});
 
 const updateScrollChrome = () => {
   scrollTicking = false;
@@ -97,24 +35,32 @@ const updateScrollChrome = () => {
   }
   // the header's edge only appears once content is actually scrolling beneath it
   if (header) header.classList.toggle("is-scrolled", doc.scrollTop > 4);
-  if (performance.now() > navLockUntil) setActiveLink(current);
+  if (current !== activeLink) {
+    if (activeLink) {
+      activeLink.classList.remove("is-active");
+      activeLink.removeAttribute("aria-current");
+    }
+    if (current) {
+      current.classList.add("is-active");
+      current.setAttribute("aria-current", "location");
+    }
+    activeLink = current;
+  }
 };
 
-function onScrollChrome() {
+const onScrollChrome = () => {
   if (!scrollTicking) {
     scrollTicking = true;
     requestAnimationFrame(updateScrollChrome);
   }
-}
+};
 window.addEventListener("scroll", onScrollChrome, { passive: true });
-window.addEventListener("resize", () => {
-  moveLens(activeLink, true);
-  onScrollChrome();
-}, { passive: true });
+window.addEventListener("resize", onScrollChrome, { passive: true });
 updateScrollChrome();
 
 // Scroll reveal: fade + rise elements into view as they enter the viewport
 const revealEls = [...document.querySelectorAll(".reveal, .reveal-photo")];
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 // Once revealed, drop the reveal styles so each component's own, faster hover and
 // press transitions apply again (the reveal transition and stagger delay would lag them)
