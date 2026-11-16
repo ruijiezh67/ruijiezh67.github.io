@@ -14,7 +14,9 @@ chips, scroll-reveal animations, and a confetti burst when you click the portrai
 - `script.js` — scroll progress bar, scroll-reveal, nav scroll-spy, footer year, avatar confetti
 - `assets/ruijie-zheng.jpg` — profile photo (3:4 portrait)
 - `assets/Ruijie_Zheng_CV.pdf` — downloadable CV
-- `assets/GAM_UIST2026_demo.pdf` / `.mp4` — UIST 2026 demo paper and video
+- `assets/GAM_UIST2026_demo.pdf` / `.mp4` — UIST 2026 demo paper and video (site links to the DOI; PDF kept as a local copy)
+- `assets/GAM_CHI2027_under_review.pdf` — CHI 2027 submission, anonymized review copy (under review)
+- `assets/Weather-Guard_ICASSP2027_under_review.pdf` — ICASSP 2027 submission, review copy (under review)
 - `assets/logos/` — institution logos (Michigan, Northwestern, SJTU)
 - `.nojekyll` — serve files as-is, skipping Jekyll processing
 
